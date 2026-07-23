@@ -8,7 +8,7 @@ using System.Xml;
 namespace DovizApi.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1")]
 public class DovizController : ControllerBase
 {
     private readonly ILogger<DovizController> _logger;
@@ -56,14 +56,14 @@ public class DovizController : ControllerBase
         }
     }
 
-    [HttpPost("doviz-al", Name = "DovizAl")]
-    public async Task<IActionResult> DovizAl(
-        DovizAlRequest request,
+    [HttpPost("doviz-cevir", Name = "DovizCevir")]
+    public async Task<IActionResult> DovizCevir(
+        DovizCevirRequest request,
         CancellationToken cancellationToken)
     {
         try
         {
-            var sonuc = await _dovizIslemService.DovizAlAsync(request, cancellationToken);
+            var sonuc = await _dovizIslemService.DovizCevirAsync(request, cancellationToken);
 
             if (sonuc.Basarili)
             {
@@ -79,7 +79,7 @@ public class DovizController : ControllerBase
         }
         catch (Exception exception) when (exception is HttpRequestException or XmlException)
         {
-            _logger.LogError(exception, "Döviz alış işlemi için TCMB kuru alınamadı.");
+            _logger.LogError(exception, "Döviz dönüşümü için TCMB kuru alınamadı.");
 
             return StatusCode(StatusCodes.Status503ServiceUnavailable, new
             {
@@ -88,48 +88,7 @@ public class DovizController : ControllerBase
         }
         catch (TaskCanceledException exception) when (!cancellationToken.IsCancellationRequested)
         {
-            _logger.LogError(exception, "Döviz alış işlemi sırasında TCMB isteği zaman aşımına uğradı.");
-
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
-            {
-                mesaj = "TCMB kur isteği zaman aşımına uğradı."
-            });
-        }
-    }
-
-    [HttpPost("doviz-sat", Name = "DovizSat")]
-    public async Task<IActionResult> DovizSat(
-        DovizSatRequest request,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            var sonuc = await _dovizIslemService.DovizSatAsync(request, cancellationToken);
-
-            if (sonuc.Basarili)
-            {
-                return Ok(sonuc.Veri);
-            }
-
-            if (sonuc.Bulunamadi)
-            {
-                return NotFound(new { mesaj = sonuc.HataMesaji });
-            }
-
-            return BadRequest(new { mesaj = sonuc.HataMesaji });
-        }
-        catch (Exception exception) when (exception is HttpRequestException or XmlException)
-        {
-            _logger.LogError(exception, "Döviz satış işlemi için TCMB kuru alınamadı.");
-
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
-            {
-                mesaj = "TCMB kur verilerine şu anda ulaşılamıyor."
-            });
-        }
-        catch (TaskCanceledException exception) when (!cancellationToken.IsCancellationRequested)
-        {
-            _logger.LogError(exception, "Döviz satış işlemi sırasında TCMB isteği zaman aşımına uğradı.");
+            _logger.LogError(exception, "Döviz dönüşümü sırasında TCMB isteği zaman aşımına uğradı.");
 
             return StatusCode(StatusCodes.Status503ServiceUnavailable, new
             {
@@ -166,14 +125,25 @@ public class DovizController : ControllerBase
             .Select(islem => new
             {
                 islem.Id,
+                islem.ReferansNo,
                 islem.MusteriId,
-                islem.DovizId,
-                dovizKodu = islem.Doviz.Kod,
-                dovizAdi = islem.Doviz.Ad,
-                islem.IslemTuru,
-                islem.DovizMiktari,
-                islem.Kur,
-                islem.TlTutari,
+                borcluHesap = new
+                {
+                    islem.BorcluHesapId,
+                    islem.BorcluHesap.EkNo,
+                    dovizKodu = islem.BorcluHesap.Doviz.Kod,
+                    miktar = islem.AlinanDovizMiktari,
+                    kur = islem.AlinanDovizKuru
+                },
+                alacakliHesap = new
+                {
+                    islem.AlacakliHesapId,
+                    islem.AlacakliHesap.EkNo,
+                    dovizKodu = islem.AlacakliHesap.Doviz.Kod,
+                    miktar = islem.OdenenDovizMiktari,
+                    kur = islem.OdenenDovizKuru
+                },
+                islem.TlKarsiligi,
                 islem.IslemTarihi
             })
             .ToListAsync(cancellationToken);

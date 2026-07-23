@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DovizApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+75a0083774aa78d590b306d22feba129df0c768b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c9f5a7de3b746c2e03ad46f05fa2d496990345ce")]
 [assembly: System.Reflection.AssemblyProductAttribute("DovizApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DovizApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,0 +1,18 @@
+# Build outputs
+**/bin/
+**/obj/
+
+# IDE files
+.idea/
+*.user
+*.suo
+
+# Operating system files
+.DS_Store
+**/.DS_Store
+
+# Local secrets and environment files
+DovizApi/appsettings.Local.json
+.env
+*.env
+!.env.example
