@@ -77,3 +77,4 @@
 /Users/furkanerdogan/RiderProjects/DovizApi/DovizApi/bin/Debug/net8.0/runtimes/win/lib/net6.0/System.Security.Cryptography.ProtectedData.dll
 /Users/furkanerdogan/RiderProjects/DovizApi/DovizApi/bin/Debug/net8.0/runtimes/win/lib/net6.0/System.Windows.Extensions.dll
 /Users/furkanerdogan/RiderProjects/DovizApi/DovizApi/bin/Debug/net8.0/appsettings.Local.json
+/Users/furkanerdogan/RiderProjects/DovizApi/DovizApi/obj/Debug/net8.0/DovizApi.sourcelink.json

@@ -150,5 +150,4 @@ public class DovizController : ControllerBase
 
         return Ok(islemler);
     }
-
 }
