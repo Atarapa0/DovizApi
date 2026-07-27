@@ -4,9 +4,10 @@ public sealed class DovizIslemi
 {
     public long Id { get; set; }
     public Guid ReferansNo { get; set; }
-    public int MusteriId { get; set; }
     public long BorcluHesapId { get; set; }
     public long AlacakliHesapId { get; set; }
+    public int OdenenDovizId { get; set; }
+    public int AlinanDovizId { get; set; }
     public decimal OdenenDovizMiktari { get; set; }
     public decimal AlinanDovizMiktari { get; set; }
     public decimal OdenenDovizKuru { get; set; }
@@ -14,8 +15,9 @@ public sealed class DovizIslemi
     public decimal TlKarsiligi { get; set; }
     public DateTime IslemTarihi { get; set; }
 
-    public Musteri Musteri { get; set; } = null!;
-    public MusteriHesabi BorcluHesap { get; set; } = null!;
-    public MusteriHesabi AlacakliHesap { get; set; } = null!;
+    public EkHesap BorcluHesap { get; set; } = null!;
+    public EkHesap AlacakliHesap { get; set; } = null!;
+    public Doviz OdenenDoviz { get; set; } = null!;
+    public Doviz AlinanDoviz { get; set; } = null!;
     public ICollection<HesapHareketi> HesapHareketleri { get; set; } = [];
 }

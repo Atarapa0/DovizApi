@@ -4,8 +4,9 @@ namespace DovizApi.Requests;
 
 public sealed class DovizCevirRequest
 {
-    [Range(1, int.MaxValue, ErrorMessage = "Geçerli bir müşteri ID gönderilmelidir.")]
-    public int MusteriId { get; set; }
+    [Required(ErrorMessage = "Hesap numarası boş olamaz.")]
+    [RegularExpression("^[0-9]{10}$", ErrorMessage = "Hesap numarası 10 rakamdan oluşmalıdır.")]
+    public string HesapNo { get; set; } = string.Empty;
 
     [Range(1, int.MaxValue, ErrorMessage = "Geçerli bir borçlu hesap Ek No gönderilmelidir.")]
     public int BorcluHesapEkNo { get; set; }

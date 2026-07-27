@@ -11,5 +11,5 @@ public sealed class HesapHareketi
     public DateTime IslemTarihi { get; set; }
 
     public DovizIslemi DovizIslemi { get; set; } = null!;
-    public MusteriHesabi Hesap { get; set; } = null!;
+    public EkHesap Hesap { get; set; } = null!;
 }

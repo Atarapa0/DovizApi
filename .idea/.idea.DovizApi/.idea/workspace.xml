@@ -17,12 +17,24 @@
     <list default="true" id="91a6fc8a-51c6-4623-acaa-b1ae3d141140" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/DovizApi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/DovizApi.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/MusterilerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/MusterilerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Data/DovizDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Data/DovizDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/DovizApi.http" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/DovizApi.http" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Models/Doviz.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/Doviz.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Models/DovizIslemi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/DovizIslemi.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Models/HesapHareketi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/HesapHareketi.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Models/Musteri.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/Musteri.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Models/MusteriHesabi.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Requests/DovizCevirRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Requests/DovizCevirRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Requests/MusteriOlusturRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Requests/MusteriOlusturRequest.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/Responses/DovizCevirResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Responses/DovizCevirResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Services/DovizIslemService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Services/DovizIslemService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/WeatherForecast.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" afterDir="false" />
@@ -37,23 +49,23 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="31" />
+    <option name="cachedIndexableFilesCount" value="30" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Atarapa0"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Atarapa0&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Atarapa0/DovizApi",
-    "accountId": "fbf3a597-d558-449e-9c5a-0c3171b10ce1"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Atarapa0/DovizApi&quot;,
+    &quot;accountId&quot;: &quot;fbf3a597-d558-449e-9c5a-0c3171b10ce1&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/92babe8112867ada958d7443496d6510f9173f428dbe621a94a6d174937/IHttpClientFactory.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -64,23 +76,23 @@
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.2844020934848666" />
-      <entry key="MS500" value="3.1232259606286106" />
-      <entry key="S2" value="8.817235730663977" />
-      <entry key="S5" value="12.396706944432413" />
-      <entry key="S10" value="14.04476675694672" />
-      <entry key="S30" value="15.31240131811745" />
-      <entry key="S60" value="15.832345507663392" />
-      <entry key="M2" value="17.583285573518697" />
-      <entry key="M5" value="22.802085385323984" />
-      <entry key="M10" value="26.946436984532486" />
-      <entry key="M15" value="29.00052739566381" />
-      <entry key="M30" value="31.7760393789794" />
-      <entry key="H1" value="33.63172857314031" />
-      <entry key="H2" value="34.82108913374902" />
-      <entry key="H4" value="39.39123307471126" />
-      <entry key="D1" value="153.5097818732299" />
-      <entry key="W1" value="250.21193363278329" />
+      <entry key="MS100" value="2.292742678488692" />
+      <entry key="MS500" value="5.778601420116236" />
+      <entry key="S2" value="18.542474564921235" />
+      <entry key="S5" value="37.759674424883165" />
+      <entry key="S10" value="64.18769134069098" />
+      <entry key="S30" value="147.91370062124827" />
+      <entry key="S60" value="216.3972416170568" />
+      <entry key="M2" value="285.5881014515851" />
+      <entry key="M5" value="374.7212785306585" />
+      <entry key="M10" value="425.87765451233355" />
+      <entry key="M15" value="447.33652409245565" />
+      <entry key="M30" value="473.6285454274433" />
+      <entry key="H1" value="492.2325364693348" />
+      <entry key="H2" value="508.60795333508685" />
+      <entry key="H4" value="526.8287645247552" />
+      <entry key="D1" value="652.0066859024679" />
+      <entry key="W1" value="769.5752189043052" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -90,44 +102,44 @@
       <entry key="S10" value="0.0" />
       <entry key="S30" value="0.0" />
       <entry key="S60" value="0.0" />
-      <entry key="M2" value="1.4530112926928356E-203" />
-      <entry key="M5" value="2.0022651783768228E-81" />
-      <entry key="M10" value="1.207203493670069E-40" />
-      <entry key="M15" value="5.089116784389293E-27" />
-      <entry key="M30" value="2.4141849662716645E-13" />
-      <entry key="H1" value="1.8894164541367215E-6" />
-      <entry key="H2" value="0.0056526003315987075" />
-      <entry key="H4" value="0.31717449480458193" />
-      <entry key="D1" value="9.479844720792459" />
-      <entry key="W1" value="17.192553697945424" />
+      <entry key="M2" value="5.633907573380399E-259" />
+      <entry key="M5" value="1.3706857125158545E-103" />
+      <entry key="M10" value="9.988232183726114E-52" />
+      <entry key="M15" value="2.08184239127894E-34" />
+      <entry key="M30" value="4.88284857539251E-17" />
+      <entry key="H1" value="2.687070436128765E-8" />
+      <entry key="H2" value="6.740994277470831E-4" />
+      <entry key="H4" value="0.10953075875990899" />
+      <entry key="D1" value="7.940372262078866" />
+      <entry key="W1" value="16.762780272842225" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.2273508503410204" />
-      <entry key="MS500" value="3.1002777993217023" />
-      <entry key="S2" value="8.804077961443134" />
-      <entry key="S5" value="12.389639860106298" />
-      <entry key="S10" value="14.040819956668948" />
-      <entry key="S30" value="15.310979928261807" />
-      <entry key="S60" value="15.831612814571978" />
-      <entry key="M2" value="17.58288129270961" />
-      <entry key="M5" value="22.80185672226493" />
-      <entry key="M10" value="26.94617427487806" />
-      <entry key="M15" value="29.000218693570854" />
-      <entry key="M30" value="31.7757306434426" />
-      <entry key="H1" value="33.63150484732791" />
-      <entry key="H2" value="34.82660138173472" />
-      <entry key="H4" value="39.708256819856075" />
-      <entry key="D1" value="162.98924491278927" />
-      <entry key="W1" value="267.40438984973576" />
+      <entry key="MS100" value="2.23463471262939" />
+      <entry key="MS500" value="5.751163221340004" />
+      <entry key="S2" value="18.518266260979765" />
+      <entry key="S5" value="37.73948778249412" />
+      <entry key="S10" value="64.17029545266132" />
+      <entry key="S30" value="147.90021686985773" />
+      <entry key="S60" value="216.38734028930423" />
+      <entry key="M2" value="285.5815392816753" />
+      <entry key="M5" value="374.7178138243661" />
+      <entry key="M10" value="425.87567946276715" />
+      <entry key="M15" value="447.33513842215723" />
+      <entry key="M30" value="473.62780727203017" />
+      <entry key="H1" value="492.23214641688554" />
+      <entry key="H2" value="508.6084105057135" />
+      <entry key="H4" value="526.9381407887587" />
+      <entry key="D1" value="659.9467209557212" />
+      <entry key="W1" value="786.3379016184249" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="AISelfReview" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3GrK1ZNrlteBMBsZdSVchZ2IDtg" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -141,6 +153,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "cidr.known.project.marker": "true",
@@ -201,7 +214,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1784724033958</updated>
-      <workItem from="1784724034964" duration="34581000" />
+      <workItem from="1784724034964" duration="41714000" />
+      <workItem from="1785132495425" duration="12687000" />
     </task>
     <task id="LOCAL-00001" summary="döviz API başlangıç yapısını, TCMB entegrasyonunu ve veritabanı şemasını ekle">
       <option name="closed" value="true" />
@@ -235,7 +249,15 @@
       <option name="project" value="LOCAL" />
       <updated>1784810136720</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="müşteri hesapları üzerinden döviz işlem akışı ekle">
+      <option name="closed" value="true" />
+      <created>1784876614090</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1784876614090</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,7 +269,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="döviz API başlangıç yapısını, TCMB entegrasyonunu ve veritabanı şemasını ekle" />
     <MESSAGE value="MSSQL tabanlı çoklu döviz hesabı ve döviz işlem sistemi eklendi" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="müşteri hesapları üzerinden döviz işlem akışı ekle" />
+    <option name="LAST_COMMIT_MESSAGE" value="müşteri hesapları üzerinden döviz işlem akışı ekle" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

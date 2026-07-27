@@ -29,12 +29,13 @@ public sealed class DovizIslemService : IDovizIslemService
             return DovizCevirSonucu.Hata("Borçlu ve alacaklı hesap aynı olamaz.");
         }
 
-        var hesaplar = await _context.MusteriHesaplari
+        var hesaplar = await _context.EkHesaplar
             .AsNoTracking()
             .Include(hesap => hesap.Doviz)
             .Where(hesap =>
-                hesap.MusteriId == request.MusteriId &&
-                hesap.Musteri.AktifMi &&
+                hesap.AnaHesap.HesapNo == request.HesapNo &&
+                hesap.AnaHesap.AktifMi &&
+                hesap.AnaHesap.Musteri.AktifMi &&
                 hesap.AktifMi &&
                 (hesap.EkNo == request.BorcluHesapEkNo ||
                  hesap.EkNo == request.AlacakliHesapEkNo))
@@ -48,7 +49,7 @@ public sealed class DovizIslemService : IDovizIslemService
         if (borcluHesapBilgisi is null || alacakliHesapBilgisi is null)
         {
             return DovizCevirSonucu.Hata(
-                "Müşteriye ait aktif borçlu veya alacaklı hesap bulunamadı.",
+                "Ana hesaba ait aktif borçlu veya alacaklı ek hesap bulunamadı.",
                 bulunamadi: true);
         }
 
@@ -97,9 +98,9 @@ public sealed class DovizIslemService : IDovizIslemService
             IsolationLevel.Serializable,
             cancellationToken);
 
-        var borcluHesap = await _context.MusteriHesaplari
+        var borcluHesap = await _context.EkHesaplar
             .SingleAsync(hesap => hesap.Id == borcluHesapBilgisi.Id, cancellationToken);
-        var alacakliHesap = await _context.MusteriHesaplari
+        var alacakliHesap = await _context.EkHesaplar
             .SingleAsync(hesap => hesap.Id == alacakliHesapBilgisi.Id, cancellationToken);
 
         if (alacakliHesap.Bakiye < request.OdenecekDovizMiktari)
@@ -117,9 +118,10 @@ public sealed class DovizIslemService : IDovizIslemService
         var dovizIslemi = new DovizIslemi
         {
             ReferansNo = Guid.NewGuid(),
-            MusteriId = request.MusteriId,
             BorcluHesapId = borcluHesap.Id,
             AlacakliHesapId = alacakliHesap.Id,
+            OdenenDovizId = alacakliHesapBilgisi.DovizId,
+            AlinanDovizId = borcluHesapBilgisi.DovizId,
             OdenenDovizMiktari = request.OdenecekDovizMiktari,
             AlinanDovizMiktari = alinanDovizMiktari,
             OdenenDovizKuru = odenenDovizKuru.Value,
@@ -153,7 +155,11 @@ public sealed class DovizIslemService : IDovizIslemService
         {
             IslemId = dovizIslemi.Id,
             ReferansNo = dovizIslemi.ReferansNo,
-            MusteriId = request.MusteriId,
+            HesapNo = request.HesapNo,
+            OdenenDovizId = alacakliHesapBilgisi.DovizId,
+            OdenenDovizKodu = alacakliHesapBilgisi.Doviz.Kod,
+            AlinanDovizId = borcluHesapBilgisi.DovizId,
+            AlinanDovizKodu = borcluHesapBilgisi.Doviz.Kod,
             BorcluHesap = new HesapTarafiResponse
             {
                 EkNo = borcluHesap.EkNo,

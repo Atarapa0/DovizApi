@@ -126,7 +126,25 @@ public class DovizController : ControllerBase
             {
                 islem.Id,
                 islem.ReferansNo,
-                islem.MusteriId,
+                islem.BorcluHesap.AnaHesap.HesapNo,
+                musteri = new
+                {
+                    islem.BorcluHesap.AnaHesap.Musteri.Id,
+                    islem.BorcluHesap.AnaHesap.Musteri.Ad,
+                    islem.BorcluHesap.AnaHesap.Musteri.Soyad
+                },
+                odenenDoviz = new
+                {
+                    islem.OdenenDovizId,
+                    islem.OdenenDoviz.Kod,
+                    islem.OdenenDoviz.Ad
+                },
+                alinanDoviz = new
+                {
+                    islem.AlinanDovizId,
+                    islem.AlinanDoviz.Kod,
+                    islem.AlinanDoviz.Ad
+                },
                 borcluHesap = new
                 {
                     islem.BorcluHesapId,

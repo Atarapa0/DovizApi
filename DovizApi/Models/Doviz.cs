@@ -9,6 +9,8 @@ public class Doviz
     public bool AktifMi { get; set; }
     public DateTime OlusturmaTarihi { get; set; }
 
-    public ICollection<MusteriHesabi> MusteriHesaplari { get; set; } = [];
+    public ICollection<EkHesap> EkHesaplar { get; set; } = [];
     public ICollection<KurKaydi> KurKayitlari { get; set; } = [];
+    public ICollection<DovizIslemi> OdenenOlduguIslemler { get; set; } = [];
+    public ICollection<DovizIslemi> AlinanOlduguIslemler { get; set; } = [];
 }
