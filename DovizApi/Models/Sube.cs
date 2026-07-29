@@ -8,5 +8,5 @@ public sealed class Sube
     public bool AktifMi { get; set; }
     public DateTime OlusturmaTarihi { get; set; }
 
-    public ICollection<AnaHesap> AnaHesaplar { get; set; } = [];
+    public ICollection<Musteri> Musteriler { get; set; } = [];
 }

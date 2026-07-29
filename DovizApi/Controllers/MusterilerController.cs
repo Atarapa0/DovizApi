@@ -1,5 +1,4 @@
 using System.Data;
-using System.Security.Cryptography;
 using DovizApi.Data;
 using DovizApi.Models;
 using DovizApi.Requests;
@@ -12,6 +11,7 @@ namespace DovizApi.Controllers;
 [Route("api/v1/musteriler")]
 public sealed class MusterilerController : ControllerBase
 {
+    private const int IlkHesapEkNo = 5001;
     private readonly DovizDbContext _context;
 
     public MusterilerController(DovizDbContext context)
@@ -51,28 +51,20 @@ public sealed class MusterilerController : ControllerBase
             IsolationLevel.Serializable,
             cancellationToken);
 
-        var hesapNo = await BenzersizHesapNoUretAsync(cancellationToken);
         var olusturmaTarihi = DateTime.UtcNow;
         var musteri = new Musteri
         {
+            SubeId = sube.Id,
             Ad = request.Ad.Trim(),
             Soyad = request.Soyad.Trim(),
-            AktifMi = true,
-            OlusturmaTarihi = olusturmaTarihi
-        };
-        var anaHesap = new AnaHesap
-        {
-            HesapNo = hesapNo,
-            Musteri = musteri,
-            SubeId = sube.Id,
             AktifMi = true,
             OlusturmaTarihi = olusturmaTarihi,
             GuncellemeTarihi = olusturmaTarihi
         };
-        var tryEkHesabi = new EkHesap
+        var tryHesabi = new MusteriHesabi
         {
-            AnaHesap = anaHesap,
-            EkNo = 1,
+            Musteri = musteri,
+            HesapEkNo = IlkHesapEkNo,
             DovizId = tryDoviz.Id,
             Bakiye = request.BaslangicTryBakiyesi,
             AktifMi = true,
@@ -80,12 +72,13 @@ public sealed class MusterilerController : ControllerBase
             GuncellemeTarihi = olusturmaTarihi
         };
 
-        _context.EkHesaplar.Add(tryEkHesabi);
+        _context.MusteriHesaplari.Add(tryHesabi);
         await _context.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
 
-        return Created(
-            $"/api/v1/hesaplar/{hesapNo}",
+        return CreatedAtAction(
+            nameof(MusteriHesaplariniGetir),
+            new { musteriId = musteri.Id },
             new
             {
                 musteri = new
@@ -93,23 +86,17 @@ public sealed class MusterilerController : ControllerBase
                     musteri.Id,
                     musteri.Ad,
                     musteri.Soyad,
-                    musteri.AktifMi
+                    musteri.AktifMi,
+                    sube = new { sube.Id, sube.Kod, sube.Ad }
                 },
-                anaHesap = new
+                ilkHesap = new
                 {
-                    anaHesap.Id,
-                    anaHesap.HesapNo,
-                    anaHesap.AktifMi,
-                    sube = new { sube.Id, sube.Kod, sube.Ad },
-                    anaHesap.OlusturmaTarihi
-                },
-                ilkEkHesap = new
-                {
-                    tryEkHesabi.Id,
-                    tryEkHesabi.EkNo,
+                    tryHesabi.HesapEkNo,
+                    tryHesabi.DovizId,
                     dovizKodu = tryDoviz.Kod,
                     dovizAdi = tryDoviz.Ad,
-                    tryEkHesabi.Bakiye
+                    tryHesabi.Bakiye,
+                    tryHesabi.AktifMi
                 }
             });
     }
@@ -126,42 +113,159 @@ public sealed class MusterilerController : ControllerBase
                 x.Ad,
                 x.Soyad,
                 x.AktifMi,
+                sube = new { x.Sube.Id, x.Sube.Kod, x.Sube.Ad },
+                hesapSayisi = x.Hesaplar.Count,
                 x.OlusturmaTarihi,
-                anaHesaplar = x.AnaHesaplar
-                    .OrderBy(hesap => hesap.Id)
-                    .Select(hesap => new
-                    {
-                        hesap.Id,
-                        hesap.HesapNo,
-                        subeKodu = hesap.Sube.Kod,
-                        hesap.AktifMi
-                    })
+                x.GuncellemeTarihi
             })
             .ToListAsync(cancellationToken);
 
         return Ok(musteriler);
     }
 
-    private async Task<string> BenzersizHesapNoUretAsync(CancellationToken cancellationToken)
+    [HttpGet("{musteriId:int}/hesaplar")]
+    public async Task<IActionResult> MusteriHesaplariniGetir(
+        int musteriId,
+        CancellationToken cancellationToken)
     {
-        const int maksimumDeneme = 10;
-
-        for (var deneme = 0; deneme < maksimumDeneme; deneme++)
-        {
-            var ilkRakam = RandomNumberGenerator.GetInt32(1, 10);
-            var kalanRakamlar = RandomNumberGenerator.GetInt32(0, 1_000_000_000);
-            var hesapNo = $"{ilkRakam}{kalanRakamlar:D9}";
-
-            var kullaniliyor = await _context.AnaHesaplar
-                .AsNoTracking()
-                .AnyAsync(x => x.HesapNo == hesapNo, cancellationToken);
-
-            if (!kullaniliyor)
+        var musteri = await _context.Musteriler
+            .AsNoTracking()
+            .Where(x => x.Id == musteriId)
+            .Select(x => new
             {
-                return hesapNo;
-            }
+                x.Id,
+                x.Ad,
+                x.Soyad,
+                x.AktifMi,
+                sube = new { x.Sube.Id, x.Sube.Kod, x.Sube.Ad, x.Sube.AktifMi },
+                hesaplar = x.Hesaplar
+                    .OrderBy(hesap => hesap.HesapEkNo)
+                    .Select(hesap => new
+                    {
+                        hesap.HesapEkNo,
+                        hesap.DovizId,
+                        dovizKodu = hesap.Doviz.Kod,
+                        dovizAdi = hesap.Doviz.Ad,
+                        hesap.Bakiye,
+                        hesap.AktifMi,
+                        hesap.OlusturmaTarihi,
+                        hesap.GuncellemeTarihi
+                    })
+            })
+            .SingleOrDefaultAsync(cancellationToken);
+
+        return musteri is null
+            ? NotFound(new { mesaj = "Müşteri bulunamadı." })
+            : Ok(musteri);
+    }
+
+    [HttpPost("{musteriId:int}/hesaplar")]
+    public async Task<IActionResult> HesapAc(
+        int musteriId,
+        HesapAcRequest request,
+        CancellationToken cancellationToken)
+    {
+        var musteriVar = await _context.Musteriler
+            .AsNoTracking()
+            .AnyAsync(x => x.Id == musteriId && x.AktifMi, cancellationToken);
+
+        if (!musteriVar)
+        {
+            return NotFound(new { mesaj = "Aktif müşteri bulunamadı." });
         }
 
-        throw new InvalidOperationException("Benzersiz hesap numarası üretilemedi.");
+        var dovizKodu = request.DovizKodu.Trim().ToUpperInvariant();
+        var doviz = await _context.Dovizler
+            .AsNoTracking()
+            .SingleOrDefaultAsync(
+                x => x.Kod == dovizKodu && x.AktifMi,
+                cancellationToken);
+
+        if (doviz is null)
+        {
+            return NotFound(new { mesaj = "Aktif döviz bulunamadı." });
+        }
+
+        await using var transaction = await _context.Database.BeginTransactionAsync(
+            IsolationLevel.Serializable,
+            cancellationToken);
+
+        var sonHesapEkNo = await _context.MusteriHesaplari
+            .Where(x => x.MusteriId == musteriId)
+            .Select(x => (int?)x.HesapEkNo)
+            .MaxAsync(cancellationToken) ?? IlkHesapEkNo - 1;
+        var olusturmaTarihi = DateTime.UtcNow;
+        var hesap = new MusteriHesabi
+        {
+            MusteriId = musteriId,
+            HesapEkNo = sonHesapEkNo + 1,
+            DovizId = doviz.Id,
+            Bakiye = 0,
+            AktifMi = true,
+            OlusturmaTarihi = olusturmaTarihi,
+            GuncellemeTarihi = olusturmaTarihi
+        };
+        _context.MusteriHesaplari.Add(hesap);
+
+        await _context.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+
+        return Created(
+            $"/api/v1/musteriler/{musteriId}/hesaplar",
+            new
+            {
+                hesap.MusteriId,
+                hesap.HesapEkNo,
+                hesap.DovizId,
+                dovizKodu = doviz.Kod,
+                dovizAdi = doviz.Ad,
+                hesap.Bakiye,
+                hesap.AktifMi,
+                hesap.OlusturmaTarihi
+            });
+    }
+
+    [HttpGet("{musteriId:int}/hesaplar/{hesapEkNo:int}/hareketler")]
+    public async Task<IActionResult> HesapHareketleriniGetir(
+        int musteriId,
+        int hesapEkNo,
+        CancellationToken cancellationToken)
+    {
+        var hesap = await _context.MusteriHesaplari
+            .AsNoTracking()
+            .Where(x => x.MusteriId == musteriId && x.HesapEkNo == hesapEkNo)
+            .Select(x => new
+            {
+                x.MusteriId,
+                x.HesapEkNo,
+                dovizKodu = x.Doviz.Kod,
+                dovizAdi = x.Doviz.Ad,
+                x.Bakiye,
+                x.AktifMi
+            })
+            .SingleOrDefaultAsync(cancellationToken);
+
+        if (hesap is null)
+        {
+            return NotFound(new { mesaj = "Müşteriye ait hesap bulunamadı." });
+        }
+
+        var hareketler = await _context.HesapHareketleri
+            .AsNoTracking()
+            .Where(x => x.MusteriId == musteriId && x.HesapEkNo == hesapEkNo)
+            .OrderByDescending(x => x.IslemTarihi)
+            .Select(x => new
+            {
+                x.Id,
+                x.DovizIslemId,
+                x.DovizIslemi.ReferansNo,
+                x.HareketTuru,
+                x.DovizMiktari,
+                x.TlKarsiligi,
+                x.IslemTarihi
+            })
+            .ToListAsync(cancellationToken);
+
+        return Ok(new { hesap, hareketler });
     }
 }

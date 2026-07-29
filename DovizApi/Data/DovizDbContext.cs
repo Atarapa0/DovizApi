@@ -13,8 +13,7 @@ public class DovizDbContext : DbContext
     public DbSet<Doviz> Dovizler => Set<Doviz>();
     public DbSet<Sube> Subeler => Set<Sube>();
     public DbSet<Musteri> Musteriler => Set<Musteri>();
-    public DbSet<AnaHesap> AnaHesaplar => Set<AnaHesap>();
-    public DbSet<EkHesap> EkHesaplar => Set<EkHesap>();
+    public DbSet<MusteriHesabi> MusteriHesaplari => Set<MusteriHesabi>();
     public DbSet<KurKaydi> KurKayitlari => Set<KurKaydi>();
     public DbSet<DovizIslemi> DovizIslemleri => Set<DovizIslemi>();
     public DbSet<HesapHareketi> HesapHareketleri => Set<HesapHareketi>();
@@ -52,49 +51,33 @@ public class DovizDbContext : DbContext
             entity.Property(x => x.Soyad).HasMaxLength(100).IsRequired();
             entity.Property(x => x.AktifMi).HasDefaultValue(true);
             entity.Property(x => x.OlusturmaTarihi).HasDefaultValueSql("SYSUTCDATETIME()");
-        });
-
-        modelBuilder.Entity<AnaHesap>(entity =>
-        {
-            entity.ToTable("AnaHesaplar", table =>
-                table.HasCheckConstraint(
-                    "CK_AnaHesaplar_HesapNo",
-                    "[HesapNo] NOT LIKE '%[^0-9]%' AND LEN([HesapNo]) = 10"));
-            entity.HasKey(x => x.Id);
-            entity.Property(x => x.HesapNo).HasMaxLength(10).IsUnicode(false).IsRequired();
-            entity.Property(x => x.AktifMi).HasDefaultValue(true);
-            entity.Property(x => x.OlusturmaTarihi).HasDefaultValueSql("SYSUTCDATETIME()");
             entity.Property(x => x.GuncellemeTarihi).HasDefaultValueSql("SYSUTCDATETIME()");
-            entity.HasIndex(x => x.HesapNo).IsUnique();
-            entity.HasIndex(x => x.MusteriId);
             entity.HasIndex(x => x.SubeId);
-            entity.HasOne(x => x.Musteri)
-                .WithMany(x => x.AnaHesaplar)
-                .HasForeignKey(x => x.MusteriId)
-                .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(x => x.Sube)
-                .WithMany(x => x.AnaHesaplar)
+                .WithMany(x => x.Musteriler)
                 .HasForeignKey(x => x.SubeId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
-        modelBuilder.Entity<EkHesap>(entity =>
+        modelBuilder.Entity<MusteriHesabi>(entity =>
         {
-            entity.ToTable("EkHesaplar", table =>
-                table.HasCheckConstraint("CK_EkHesaplar_Bakiye", "[Bakiye] >= 0"));
-            entity.HasKey(x => x.Id);
+            entity.ToTable("MusteriHesaplari", table =>
+            {
+                table.HasCheckConstraint("CK_MusteriHesaplari_HesapEkNo", "[HesapEkNo] >= 5001");
+                table.HasCheckConstraint("CK_MusteriHesaplari_Bakiye", "[Bakiye] >= 0");
+            });
+            entity.HasKey(x => new { x.MusteriId, x.HesapEkNo });
             entity.Property(x => x.Bakiye).HasPrecision(19, 4);
             entity.Property(x => x.AktifMi).HasDefaultValue(true);
             entity.Property(x => x.OlusturmaTarihi).HasDefaultValueSql("SYSUTCDATETIME()");
             entity.Property(x => x.GuncellemeTarihi).HasDefaultValueSql("SYSUTCDATETIME()");
-            entity.HasIndex(x => new { x.AnaHesapId, x.EkNo }).IsUnique();
             entity.HasIndex(x => x.DovizId);
-            entity.HasOne(x => x.AnaHesap)
-                .WithMany(x => x.EkHesaplar)
-                .HasForeignKey(x => x.AnaHesapId)
+            entity.HasOne(x => x.Musteri)
+                .WithMany(x => x.Hesaplar)
+                .HasForeignKey(x => x.MusteriId)
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(x => x.Doviz)
-                .WithMany(x => x.EkHesaplar)
+                .WithMany(x => x.MusteriHesaplari)
                 .HasForeignKey(x => x.DovizId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
@@ -120,7 +103,7 @@ public class DovizDbContext : DbContext
             {
                 table.HasCheckConstraint(
                     "CK_DovizIslemleri_Hesaplar",
-                    "[BorcluHesapId] <> [AlacakliHesapId]");
+                    "[BorcluHesapEkNo] <> [AlacakliHesapEkNo]");
                 table.HasCheckConstraint(
                     "CK_DovizIslemleri_Dovizler",
                     "[OdenenDovizId] <> [AlinanDovizId]");
@@ -138,17 +121,17 @@ public class DovizDbContext : DbContext
             entity.Property(x => x.TlKarsiligi).HasPrecision(19, 4);
             entity.Property(x => x.IslemTarihi).HasDefaultValueSql("SYSUTCDATETIME()");
             entity.HasIndex(x => x.ReferansNo).IsUnique();
-            entity.HasIndex(x => x.BorcluHesapId);
-            entity.HasIndex(x => x.AlacakliHesapId);
+            entity.HasIndex(x => new { x.MusteriId, x.BorcluHesapEkNo });
+            entity.HasIndex(x => new { x.MusteriId, x.AlacakliHesapEkNo });
             entity.HasIndex(x => x.OdenenDovizId);
             entity.HasIndex(x => x.AlinanDovizId);
             entity.HasOne(x => x.BorcluHesap)
                 .WithMany(x => x.BorcluOlduguIslemler)
-                .HasForeignKey(x => x.BorcluHesapId)
+                .HasForeignKey(x => new { x.MusteriId, x.BorcluHesapEkNo })
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(x => x.AlacakliHesap)
                 .WithMany(x => x.AlacakliOlduguIslemler)
-                .HasForeignKey(x => x.AlacakliHesapId)
+                .HasForeignKey(x => new { x.MusteriId, x.AlacakliHesapEkNo })
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(x => x.OdenenDoviz)
                 .WithMany(x => x.OdenenOlduguIslemler)
@@ -172,14 +155,14 @@ public class DovizDbContext : DbContext
             entity.Property(x => x.TlKarsiligi).HasPrecision(19, 4);
             entity.Property(x => x.IslemTarihi).HasDefaultValueSql("SYSUTCDATETIME()");
             entity.HasIndex(x => x.DovizIslemId);
-            entity.HasIndex(x => x.HesapId);
+            entity.HasIndex(x => new { x.MusteriId, x.HesapEkNo });
             entity.HasOne(x => x.DovizIslemi)
                 .WithMany(x => x.HesapHareketleri)
                 .HasForeignKey(x => x.DovizIslemId)
                 .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(x => x.Hesap)
                 .WithMany(x => x.Hareketler)
-                .HasForeignKey(x => x.HesapId)
+                .HasForeignKey(x => new { x.MusteriId, x.HesapEkNo })
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

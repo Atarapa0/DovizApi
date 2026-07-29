@@ -1,6 +1,6 @@
 @DovizApi_HostAddress = http://localhost:5054
 
-### Yeni müşteri + ana hesap + Ek No 1 TRY hesabı oluştur
+### Yeni müşteri + Hesap Ek No 5001 TRY hesabı oluştur
 POST {{DovizApi_HostAddress}}/api/v1/musteriler
 Content-Type: application/json
 
@@ -11,12 +11,12 @@ Content-Type: application/json
   "baslangicTryBakiyesi": 10000
 }
 
-### 004 sunum verisindeki Ayşe Yılmaz hesabı
-GET {{DovizApi_HostAddress}}/api/v1/hesaplar/1000000001
+### 005 kurulum verisindeki 1 numaralı müşterinin hesapları
+GET {{DovizApi_HostAddress}}/api/v1/musteriler/1/hesaplar
 Accept: application/json
 
 ### Döviz ek hesabı aç
-POST {{DovizApi_HostAddress}}/api/v1/hesaplar/1000000001/ek-hesaplar
+POST {{DovizApi_HostAddress}}/api/v1/musteriler/1/hesaplar
 Content-Type: application/json
 
 {
@@ -28,9 +28,9 @@ POST {{DovizApi_HostAddress}}/api/v1/doviz-cevir
 Content-Type: application/json
 
 {
-  "hesapNo": "1000000001",
-  "borcluHesapEkNo": 2,
-  "alacakliHesapEkNo": 1,
+  "musteriId": 1,
+  "borcluHesapEkNo": 5002,
+  "alacakliHesapEkNo": 5001,
   "odenecekDovizMiktari": 1000
 }
 

@@ -1,6 +1,6 @@
 # Döviz API Proje Anlatımı
 
-> Güncel hesap modeli: `Müşteri -> Ana Hesap -> Ek Hesaplar`. Ana hesap şubeye bağlıdır ve finansal API işlemleri `musteriId` yerine 10 haneli `hesapNo` kullanır. Bu yapı `Database/003_AccountHierarchy.sql` ile kurulmaktadır.
+> Güncel hesap modeli: `Şube -> Müşteri -> Müşteri Hesapları`. Ayrı ana hesap ve 10 haneli hesap numarası yoktur. Her hesabın kimliği `(MusteriId, HesapEkNo)` birleşimidir ve ek numaralar her müşteri için 5001'den başlar.
 
 Bu doküman projedeki dosyaların, sınıfların ve önemli teknik tercihlerin ne amaçla kullanıldığını açıklamak için hazırlanmıştır. Amaç yalnızca kodun ne yaptığını değil, neden bu şekilde tasarlandığını da anlatabilmektir.
 
@@ -31,7 +31,7 @@ Projede sorumluluklar şu şekilde ayrılmıştır:
 - `Models`: Veritabanı tablolarının C# karşılıklarını içerir.
 - `Requests`: API'ye dışarıdan gönderilebilecek verileri tanımlar.
 - `Responses`: API'nin dışarıya döndüreceği verileri tanımlar.
-- `Database`: Elle çalıştırılan veritabanı oluşturma ve migration scriptlerini içerir.
+- `Database`: Boş veritabanında elle çalıştırılan tek kurulum scriptini içerir.
 
 Bu ayrımın amacı her sınıfın tek ve anlaşılır bir sorumluluğa sahip olmasıdır.
 
@@ -349,15 +349,15 @@ Bu nedenle projection kullanılan sorguda ayrıca `Include` yazılması gerekmez
 
 ---
 
-# Controllers/MusterilerController.cs ve HesaplarController.cs
+# Controllers/MusterilerController.cs
 
-`MusterilerController` müşteri oluşturma/listeleme işlemlerini, `HesaplarController` ise hesap numarasıyla ana hesap ve ek hesap işlemlerini yönetir.
+`MusterilerController` müşteri oluşturma/listeleme ile müşteriye bağlı döviz hesabı işlemlerini yönetir.
 
 Müşteri işlemlerinin döviz controller'ından ayrılmasının nedeni farklı sorumlulukları ayrı sınıflarda tutmaktır.
 
 ## POST /api/v1/musteriler
 
-Yeni müşteri, şubeye bağlı ana hesap ve Ek No 1 TRY hesabını tek transaction içinde oluşturur. İstekte `subeKodu` alınır; benzersiz 10 haneli `hesapNo` API tarafından üretilir.
+Yeni müşteri ve `HesapEkNo = 5001` TRY hesabını tek transaction içinde oluşturur. İstekte alınan `subeKodu` doğrudan müşteriye bağlanır.
 
 İlk olarak aktif TRY para biriminin ID'si veritabanından bulunur. TRY ID'si doğrudan `1` yazılmamıştır; çünkü farklı veritabanlarında aynı dövizin ID'si farklı olabilir.
 
@@ -375,14 +375,14 @@ Transaction için `IsolationLevel.Serializable` kullanılır. Bu seviye aynı an
 
 Başarılı sonuçta `CreatedAtAction` kullanılır. Yeni kaynak oluşturulduğu için REST yaklaşımına uygun olarak `201 Created` döndürülür ve oluşturulan kaynağa ulaşılabilecek adres belirtilir.
 
-## POST /api/v1/hesaplar/{hesapNo}/ek-hesaplar
+## POST /api/v1/musteriler/{musteriId}/hesaplar
 
-Ana hesaba yeni döviz ek hesabı açar.
+Müşteriye yeni döviz hesabı açar.
 
 Kontroller:
 
-1. Ana hesap ve müşteri aktif mi?
-2. Hesap numarası geçerli mi?
+1. Müşteri var ve aktif mi?
+2. Müşteri ID geçerli mi?
 3. Döviz kodu var mı?
 4. Döviz aktif mi?
 
@@ -394,24 +394,24 @@ request.DovizKodu.Trim().ToUpperInvariant()
 
 Kullanıcı `" eur "` gönderirse değer `"EUR"` hâline getirilir.
 
-Yeni ek numarası ana hesabın mevcut en yüksek ek numarasının bir fazlası olarak hesaplanır. Bu işlem de aynı anda açılan hesapların aynı ek numarasını almaması için transaction içinde yapılır.
+Yeni hesap ek numarası müşterinin mevcut en yüksek numarasının bir fazlası olarak hesaplanır. İlk numara 5001'dir; sonraki hesaplar 5002, 5003 şeklinde ilerler.
 
 ## GET /api/v1/musteriler
 
 Bütün müşterileri salt okunur olarak getirir. `AsNoTracking` ve yalnızca gerekli alanları alan `Select` projection kullanılır.
 
-## GET /api/v1/hesaplar/{hesapNo}
+## GET /api/v1/musteriler/{musteriId}/hesaplar
 
-Sorguyu ana hesaptan başlatır; müşteri, şube ve ek hesapları ek numarasına göre sıralanmış olarak getirir.
+Müşteri, bağlı şube ve döviz hesaplarını hesap ek numarasına göre sıralanmış olarak getirir.
 
 Müşteri ve hesap sorgularının ayrı yapılmasının nedenleri:
 
 - Müşteri yoksa açıkça `404 Not Found` döndürmek
 - Müşteri varsa ve henüz hesabı yoksa müşteriyi boş hesap listesiyle göstermek
 
-## GET /api/v1/hesaplar/{hesapNo}/ek-hesaplar/{ekNo}/hareketler
+## GET /api/v1/musteriler/{musteriId}/hesaplar/{hesapEkNo}/hareketler
 
-Belirli ana hesabın ek numaralı hesabını bulur ve hareketlerini en yeniden en eskiye getirir. Hareket özelliği şimdilik yalnızca yeni hesap modeline uyarlanmıştır.
+Belirli müşterinin birleşik `(MusteriId, HesapEkNo)` anahtarlı hesabını bulur ve hareketlerini en yeniden en eskiye getirir.
 
 Hesap hareketleri, hesabın ekstresi gibi düşünülebilir.
 
@@ -724,7 +724,7 @@ Veritabanı entity'lerini doğrudan request olarak kullanmamanın nedenleri:
 
 Döviz dönüşümünde kullanıcının gönderebileceği alanları içerir:
 
-- `HesapNo`
+- `MusteriId`
 - `BorcluHesapEkNo`
 - `AlacakliHesapEkNo`
 - `OdenecekDovizMiktari`
@@ -739,7 +739,7 @@ Kullanıcı şu alanları belirleyemez:
 
 Bu alanları sistem hesaplar ve üretir.
 
-Hesap numarası düzenli ifadeyle 10 rakam olarak, ek numaraları ve tutarlar ise `Range` ile doğrulanır.
+Müşteri ID, hesap ek numaraları ve tutarlar `Range` ile doğrulanır.
 
 `[ApiController]` sayesinde validation başarısızsa action çalışmadan otomatik `400 Bad Request` döner.
 
@@ -800,8 +800,7 @@ Her `DbSet`, sorgulanabilir bir veritabanı tablosunu temsil eder:
 - `Dovizler`
 - `Subeler`
 - `Musteriler`
-- `AnaHesaplar`
-- `EkHesaplar`
+- `MusteriHesaplari`
 - `KurKayitlari`
 - `DovizIslemleri`
 - `HesapHareketleri`
@@ -845,13 +844,12 @@ Kur değerleri hesaplamada daha hassas olması gerektiği için daha fazla ondal
 ## Unique ek numarası
 
 ```csharp
-entity.HasIndex(x => new { x.AnaHesapId, x.EkNo })
-    .IsUnique();
+entity.HasKey(x => new { x.MusteriId, x.HesapEkNo });
 ```
 
-Aynı ana hesapta aynı ek numarasının iki defa açılmasını engeller.
+Aynı müşteride aynı hesap ek numarasının iki defa açılmasını engeller.
 
-Farklı ana hesapların aynı ek numarasına sahip olması normaldir.
+Farklı müşterilerin aynı hesap ek numarasına sahip olması normaldir.
 
 ## DeleteBehavior.Restrict
 
@@ -895,17 +893,17 @@ Döviz kodunu her hesapta metin olarak tekrar etmek yerine hesaplarda `DovizId` 
 
 Müşterinin temel bilgilerini ve navigation property'lerini içerir.
 
-`AnaHesaplar` collection'ı bir müşterinin birden fazla ana hesaba sahip olabileceğini gösterir.
+`Hesaplar` collection'ı bir müşterinin birden fazla döviz hesabına sahip olabileceğini gösterir. Müşterinin şube bağlantısı da doğrudan bu modelde bulunur.
 
-## Models/AnaHesap.cs ve Models/EkHesap.cs
+## Models/MusteriHesabi.cs
 
-`AnaHesap` müşteri ve şubeyi 10 haneli hesap numarası altında birleştirir. `EkHesap` bu ana hesaba bağlı tek bir döviz hesabını temsil eder.
+Müşteriye bağlı tek bir döviz hesabını temsil eder. Ayrı bir `Id` alanı yoktur; primary key `MusteriId + HesapEkNo` birleşimidir.
 
 Örnek:
 
 ```text
-Hesap No: 1234567890
-Ek No: 2
+Müşteri ID: 1
+Hesap Ek No: 5002
 Döviz: EUR
 Bakiye: 100 EUR
 ```
@@ -914,7 +912,7 @@ Bakiyenin müşteri tablosunda tek alan olarak tutulmamasının nedeni her dövi
 
 Navigation property'ler üzerinden:
 
-- Ek hesabın ana hesabına, oradan müşteriye ve şubeye
+- Hesabın müşterisine ve müşterinin şubesine
 - Hesabın dövizine
 - Hesabın borçlu veya alacaklı olduğu işlemlere
 - Hesabın hareketlerine
@@ -980,70 +978,22 @@ Sorulursa şu şekilde açıklanabilir:
 
 ---
 
-# Database/001_InitialSchema.sql
+# Database/005_FullDatabaseSetup.sql
 
-Projenin ilk veritabanı tasarımını oluşturur.
+Boş SQL Server veritabanında projenin bütün tablolarını ve sunum verilerini tek transaction içinde oluşturur. Hedef tablolardan biri zaten varsa mevcut verileri korumak için hiçbir değişiklik yapmadan hata verir.
 
-İlk tasarımda:
-
-- Dövizler
-- Müşteriler
-- Müşteri bakiyeleri
-- Kur kayıtları
-- Eski ALIS/SATIS tabanlı döviz işlemleri
-
-bulunuyordu.
-
-Bu tasarım henüz ek numaralı hesap ve çift taraflı hesap hareketi yapısından önce hazırlanmıştır.
-
-Script içinde transaction ve `TRY/CATCH` kullanılır. Herhangi bir hata oluşursa oluşturulan yarım veritabanı yapısı bırakılmadan rollback yapılır.
-
----
-
-# Database/002_AccountLedgerMigration.sql
-
-Eski bakiye tasarımını yeni hesap ve borç/alacak tasarımına dönüştürür.
-
-Yaptığı temel işlemler:
-
-- `MusteriBakiyeleri` yapısını `MusteriHesaplari` yapısına dönüştürür.
-- Hesaplara ek numarası verir.
-- Aktiflik ve oluşturulma alanları ekler.
-- `(MusteriId, EkNo)` benzersizlik kuralını oluşturur.
-- Döviz işlemlerine borçlu ve alacaklı hesap alanları ekler.
-- İşlemlere referans numarası verir.
-- Eski `ALIS/SATIS` alanlarını yeni yapıya dönüştürür.
-- `HesapHareketleri` tablosunu oluşturur.
-- Eski işlemler için BORC ve ALACAK hareketleri üretir.
-
-Neden ilk SQL dosyasını doğrudan değiştirmek yerine ikinci migration yazıldı?
-
-Mevcut veritabanında müşteri ve işlem verileri bulunabilir. İlk scripti değiştirip veritabanını baştan oluşturmak bu verileri kaybettirebilir. Migration mevcut veriyi koruyarak şemayı bir sonraki sürüme taşır.
-
----
-
-# Database/003_AccountHierarchy.sql
-
-Güncel şube, ana hesap ve ek hesap hiyerarşisini temiz başlangıçla kurar. Bu script müşteri, hesap, işlem ve hareket verilerini siler; `Dovizler` ile `KurKayitlari` tablolarını korur.
-
-Script uygulama tarafından otomatik çalıştırılmaz. Kullanıcı içeriği kontrol edip SQL Server üzerinde elle çalıştırmalıdır. Oluşturduğu temel bağlantılar:
+Oluşturduğu temel bağlantılar:
 
 ```text
-Musteriler 1 ── N AnaHesaplar N ── 1 Subeler
-AnaHesaplar 1 ── N EkHesaplar N ── 1 Dovizler
-DovizIslemleri ── Borclu/Alacakli EkHesaplar
+Subeler 1 ── N Musteriler
+Musteriler 1 ── N MusteriHesaplari N ── 1 Dovizler
+DovizIslemleri ── (MusteriId, Borclu/AlacakliHesapEkNo)
 DovizIslemleri ── Odenen/Alinan Dovizler
 ```
 
----
+Script ayrıca sekiz döviz, üç şube, dört müşteri, her müşteride 5001'den başlayan döviz hesapları, örnek kur kayıtları, dört referans numaralı döviz işlemi ve sekiz hesap hareketi ekler.
 
-# Database/004_PresentationSeedData.sql
-
-`003_AccountHierarchy.sql` sonrasında elle çalıştırılabilen sunum verisi scriptidir. Üç şube, dört müşteri, ana hesaplar, TRY/USD/EUR/GBP ek hesapları, örnek kurlar, dört referans numaralı döviz işlemi ve bunlara bağlı hesap hareketleri ekler.
-
-Sabit hesap numarası ve referans numaralarını kontrol ettiği için tekrar çalıştırıldığında aynı sunum kayıtlarını çoğaltmaz. Uygulama bu scripti otomatik çalıştırmaz.
-
-Scriptlerdeki SQL kodları uygulama tarafından otomatik çalıştırılmaz. Kullanıcı tarafından MSSQL üzerinde elle çalıştırılır.
+SQL uygulama tarafından otomatik çalıştırılmaz. Boş veritabanı seçildikten sonra kullanıcı tarafından MSSQL üzerinde bir defa elle çalıştırılır.
 
 ---
 
@@ -1150,15 +1100,9 @@ Bütün müşterileri getirir.
 
 ### GET /api/v1/musteriler/{musteriId}/hesaplar
 
-Bu eski endpoint kaldırılmıştır. Güncel karşılığı aşağıdadır.
-
-### GET /api/v1/hesaplar/{hesapNo}
-
 Belirli müşterinin hesaplarını getirir.
 
-### GET /api/v1/musteriler/{musteriId}/hesaplar/{ekNo}/hareketler
-
-Bu eski endpoint kaldırılmıştır. Güncel karşılığı `GET /api/v1/hesaplar/{hesapNo}/ek-hesaplar/{ekNo}/hareketler` şeklindedir.
+### GET /api/v1/musteriler/{musteriId}/hesaplar/{hesapEkNo}/hareketler
 
 Belirli müşterinin belirli ek numaralı hesabının hareketlerini getirir.
 
@@ -1168,7 +1112,7 @@ POST istekleri yeni kayıt veya finansal işlem oluşturur.
 
 ### POST /api/v1/musteriler
 
-Yeni müşteri ve otomatik Ek No 1 TRY hesabı oluşturur.
+Yeni müşteri ve otomatik Hesap Ek No 5001 TRY hesabı oluşturur.
 
 Örnek body:
 
@@ -1181,7 +1125,7 @@ Yeni müşteri ve otomatik Ek No 1 TRY hesabı oluşturur.
 }
 ```
 
-### POST /api/v1/hesaplar/{hesapNo}/ek-hesaplar
+### POST /api/v1/musteriler/{musteriId}/hesaplar
 
 Müşteriye yeni döviz hesabı açar.
 
@@ -1201,9 +1145,9 @@ Müşteriye yeni döviz hesabı açar.
 
 ```json
 {
-  "hesapNo": "1234567890",
-  "borcluHesapEkNo": 2,
-  "alacakliHesapEkNo": 1,
+  "musteriId": 1,
+  "borcluHesapEkNo": 5002,
+  "alacakliHesapEkNo": 5001,
   "odenecekDovizMiktari": 1000
 }
 ```
@@ -1211,9 +1155,9 @@ Müşteriye yeni döviz hesabı açar.
 Bu örneğin anlamı:
 
 ```text
-Ek No 2 → Alınacak döviz hesabı, BORC, bakiye artar
-Ek No 1 → Ödenecek döviz hesabı, ALACAK, bakiye azalır
-Ödenecek tutar → Ek No 1 hesabının dövizinden 1.000 birim
+Hesap Ek No 5002 → Alınacak döviz hesabı, BORC, bakiye artar
+Hesap Ek No 5001 → Ödenecek döviz hesabı, ALACAK, bakiye azalır
+Ödenecek tutar → Hesap Ek No 5001 hesabının dövizinden 1.000 birim
 ```
 
 ---

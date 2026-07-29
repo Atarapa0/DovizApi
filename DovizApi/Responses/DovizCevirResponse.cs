@@ -4,7 +4,7 @@ public sealed class DovizCevirResponse
 {
     public long IslemId { get; init; }
     public Guid ReferansNo { get; init; }
-    public string HesapNo { get; init; } = string.Empty;
+    public int MusteriId { get; init; }
     public int OdenenDovizId { get; init; }
     public string OdenenDovizKodu { get; init; } = string.Empty;
     public int AlinanDovizId { get; init; }
@@ -17,7 +17,7 @@ public sealed class DovizCevirResponse
 
 public sealed class HesapTarafiResponse
 {
-    public int EkNo { get; init; }
+    public int HesapEkNo { get; init; }
     public string DovizKodu { get; init; } = string.Empty;
     public decimal DovizMiktari { get; init; }
     public decimal UygulananKur { get; init; }

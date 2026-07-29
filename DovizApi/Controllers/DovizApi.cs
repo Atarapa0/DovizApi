@@ -126,12 +126,12 @@ public class DovizController : ControllerBase
             {
                 islem.Id,
                 islem.ReferansNo,
-                islem.BorcluHesap.AnaHesap.HesapNo,
+                islem.MusteriId,
                 musteri = new
                 {
-                    islem.BorcluHesap.AnaHesap.Musteri.Id,
-                    islem.BorcluHesap.AnaHesap.Musteri.Ad,
-                    islem.BorcluHesap.AnaHesap.Musteri.Soyad
+                    islem.BorcluHesap.Musteri.Id,
+                    islem.BorcluHesap.Musteri.Ad,
+                    islem.BorcluHesap.Musteri.Soyad
                 },
                 odenenDoviz = new
                 {
@@ -147,16 +147,14 @@ public class DovizController : ControllerBase
                 },
                 borcluHesap = new
                 {
-                    islem.BorcluHesapId,
-                    islem.BorcluHesap.EkNo,
+                    islem.BorcluHesapEkNo,
                     dovizKodu = islem.BorcluHesap.Doviz.Kod,
                     miktar = islem.AlinanDovizMiktari,
                     kur = islem.AlinanDovizKuru
                 },
                 alacakliHesap = new
                 {
-                    islem.AlacakliHesapId,
-                    islem.AlacakliHesap.EkNo,
+                    islem.AlacakliHesapEkNo,
                     dovizKodu = islem.AlacakliHesap.Doviz.Kod,
                     miktar = islem.OdenenDovizMiktari,
                     kur = islem.OdenenDovizKuru
