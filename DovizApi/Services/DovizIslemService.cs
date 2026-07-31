@@ -4,6 +4,7 @@ using DovizApi.Models;
 using DovizApi.Requests;
 using DovizApi.Responses;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DovizApi.Services;
 
@@ -32,9 +33,12 @@ public sealed class DovizIslemService : IDovizIslemService
         var hesaplar = await _context.MusteriHesaplari
             .AsNoTracking()
             .Include(hesap => hesap.Doviz)
+            .Include(hesap => hesap.Musteri)
+            .ThenInclude(musteri => musteri.Sube)
             .Where(hesap =>
                 hesap.MusteriId == request.MusteriId &&
                 hesap.Musteri.AktifMi &&
+                hesap.Musteri.Sube.AktifMi &&
                 hesap.AktifMi &&
                 (hesap.HesapEkNo == request.BorcluHesapEkNo ||
                  hesap.HesapEkNo == request.AlacakliHesapEkNo))
@@ -115,6 +119,13 @@ public sealed class DovizIslemService : IDovizIslemService
         }
 
         var islemTarihi = DateTime.UtcNow;
+        var subeKodu = borcluHesapBilgisi.Musteri.Sube.Kod;
+        var islemKodu = borcluHesapBilgisi.Doviz.Kod == "TRY"
+            ? "DOVA"
+            : "DOVS";
+        var sayac = await SonrakiReferansSayaciniAlAsync(cancellationToken);
+        var referansNo = $"{subeKodu}{islemKodu}{islemTarihi:yy}{sayac:D6}";
+
         alacakliHesap.Bakiye -= request.OdenecekDovizMiktari;
         alacakliHesap.GuncellemeTarihi = islemTarihi;
         borcluHesap.Bakiye += alinanDovizMiktari;
@@ -122,7 +133,7 @@ public sealed class DovizIslemService : IDovizIslemService
 
         var dovizIslemi = new DovizIslemi
         {
-            ReferansNo = Guid.NewGuid(),
+            ReferansNo = referansNo,
             MusteriId = request.MusteriId,
             BorcluHesapEkNo = borcluHesap.HesapEkNo,
             AlacakliHesapEkNo = alacakliHesap.HesapEkNo,
@@ -187,6 +198,27 @@ public sealed class DovizIslemService : IDovizIslemService
             TlKarsiligi = tlKarsiligi,
             IslemTarihi = islemTarihi
         });
+    }
+
+    private async Task<int> SonrakiReferansSayaciniAlAsync(
+        CancellationToken cancellationToken)
+    {
+        var transaction = _context.Database.CurrentTransaction
+            ?? throw new InvalidOperationException(
+                "Referans sayacı transaction içerisinde alınmalıdır.");
+
+        var connection = _context.Database.GetDbConnection();
+        await using var command = connection.CreateCommand();
+        command.Transaction = transaction.GetDbTransaction();
+        command.CommandText = "SELECT NEXT VALUE FOR dbo.DovizReferansSayaci";
+
+        var sonuc = await command.ExecuteScalarAsync(cancellationToken);
+        if (sonuc is null || sonuc == DBNull.Value)
+        {
+            throw new InvalidOperationException("Referans sayacı alınamadı.");
+        }
+
+        return Convert.ToInt32(sonuc);
     }
 
     private static decimal? KurBul(

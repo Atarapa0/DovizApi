@@ -14,38 +14,23 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91a6fc8a-51c6-4623-acaa-b1ae3d141140" name="Changes" comment=" refactor: hesap yapısını müşteri bazlı birleşik anahtara dönüştür&#10;&#10;  - Ana hesap ve ayrı hesap ID yapısı kaldırıldı&#10;  - Müşteri hesapları MusteriId ve HesapEkNo ile bağlandı&#10;  - Ek hesap numaraları 5001'den başlayacak şekilde düzenlendi&#10;  - Döviz işlemleri ve hareketler composite foreign key yapısına geçirildi&#10;  - SQL ve sunum verisi scriptleri güncellendi">
+    <list default="true" id="91a6fc8a-51c6-4623-acaa-b1ae3d141140" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/001_InitialSchema.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/002_AccountLedgerMigration.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/003_AccountHierarchy.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/004_PresentationSeedData.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/DovizApi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/DovizApi.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/HesaplarController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/MusterilerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/MusterilerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/Data/DovizDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Data/DovizDbContext.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/DovizApi.http" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/DovizApi.http" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Models/AnaHesap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Models/Doviz.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/Doviz.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/Models/DovizIslemi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/DovizIslemi.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Models/EkHesap.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Models/HesapHareketi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/HesapHareketi.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Models/Musteri.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/Musteri.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Models/Sube.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/Sube.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Requests/DovizCevirRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Requests/DovizCevirRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Requests/MusteriOlusturRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Requests/MusteriOlusturRequest.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/Responses/DovizCevirResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Responses/DovizCevirResponse.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/Services/DovizIslemService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Services/DovizIslemService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/refint/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/refint/DovizApi.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PROJE_ANLATIMI.md" beforeDir="false" afterPath="$PROJECT_DIR$/PROJE_ANLATIMI.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +41,7 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="30" />
+    <option name="cachedIndexableFilesCount" value="31" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -83,61 +68,61 @@
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.0" />
-      <entry key="S60" value="1.0" />
-      <entry key="M2" value="1.0" />
-      <entry key="M5" value="1.0" />
-      <entry key="M10" value="1.0" />
-      <entry key="M15" value="1.0" />
-      <entry key="M30" value="1.000000002324305" />
-      <entry key="H1" value="1.000875210320925" />
-      <entry key="H2" value="1.6678608729574456" />
-      <entry key="H4" value="20.228200083388217" />
-      <entry key="D1" value="382.1539074671376" />
-      <entry key="W1" value="723.7308153080041" />
+      <entry key="MS100" value="1.320497127696629" />
+      <entry key="MS500" value="3.280044970832223" />
+      <entry key="S2" value="4.464806091915518" />
+      <entry key="S5" value="4.7757081315944045" />
+      <entry key="S10" value="4.8940627942394" />
+      <entry key="S30" value="5.862955399445273" />
+      <entry key="S60" value="8.043965282178586" />
+      <entry key="M2" value="10.741999966976481" />
+      <entry key="M5" value="13.60140480509461" />
+      <entry key="M10" value="16.693642458619934" />
+      <entry key="M15" value="20.125303546991894" />
+      <entry key="M30" value="28.08164158207715" />
+      <entry key="H1" value="35.806491164455416" />
+      <entry key="H2" value="41.73817285579531" />
+      <entry key="H4" value="57.70577633191556" />
+      <entry key="D1" value="404.33243728646465" />
+      <entry key="W1" value="764.6278917973988" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="0.0" />
-      <entry key="S10" value="0.0" />
-      <entry key="S30" value="0.0" />
-      <entry key="S60" value="0.0" />
-      <entry key="M2" value="0.0" />
-      <entry key="M5" value="2.1070742000397628E-173" />
-      <entry key="M10" value="1.238396172481607E-86" />
-      <entry key="M15" value="1.115223285423397E-57" />
-      <entry key="M30" value="1.1301347965709932E-28" />
-      <entry key="H1" value="4.0879685505029394E-14" />
-      <entry key="H2" value="8.314539600435291E-7" />
-      <entry key="H4" value="0.003846743423903492" />
-      <entry key="D1" value="4.543951816822697" />
-      <entry key="W1" value="15.478057653579738" />
+      <entry key="MS100" value="3.306767917E-314" />
+      <entry key="MS500" value="2.0131716675196306E-63" />
+      <entry key="S2" value="2.1601376770075528E-16" />
+      <entry key="S5" value="6.498981625516062E-7" />
+      <entry key="S10" value="0.0010976473084866618" />
+      <entry key="S30" value="0.20886540367252837" />
+      <entry key="S60" value="0.877677076884635" />
+      <entry key="M2" value="1.85363462201483" />
+      <entry key="M5" value="2.93298175474207" />
+      <entry key="M10" value="3.423694382754239" />
+      <entry key="M15" value="3.6055748517133375" />
+      <entry key="M30" value="3.7974860658356215" />
+      <entry key="H1" value="3.897380657291826" />
+      <entry key="H2" value="3.948345356198886" />
+      <entry key="H4" value="3.9766418798109417" />
+      <entry key="D1" value="8.240437934789005" />
+      <entry key="W1" value="19.327568195837085" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="4.064666929742892E-12" />
-      <entry key="MS500" value="0.005269931774764447" />
-      <entry key="S2" value="0.26943328626091767" />
-      <entry key="S5" value="0.5918075471363803" />
-      <entry key="S10" value="0.7692902879514211" />
-      <entry key="S30" value="0.9162839581431057" />
-      <entry key="S60" value="0.9572272238831832" />
-      <entry key="M2" value="0.9783798975261007" />
-      <entry key="M5" value="0.9912952115426872" />
-      <entry key="M10" value="0.9956380926534938" />
-      <entry key="M15" value="0.9970899436340437" />
-      <entry key="M30" value="0.998543914044775" />
-      <entry key="H1" value="1.0001468998016219" />
-      <entry key="H2" value="1.6674971245995456" />
-      <entry key="H4" value="20.23185845679657" />
-      <entry key="D1" value="386.69763444848354" />
-      <entry key="W1" value="739.2087782178758" />
+      <entry key="MS100" value="1.2908564906791882" />
+      <entry key="MS500" value="3.2625481830132013" />
+      <entry key="S2" value="4.458670933590117" />
+      <entry key="S5" value="4.7730693572805345" />
+      <entry key="S10" value="4.893528212912892" />
+      <entry key="S30" value="6.054257386171166" />
+      <entry key="S60" value="8.885075955057806" />
+      <entry key="M2" value="12.556593566973188" />
+      <entry key="M5" value="16.50940506024652" />
+      <entry key="M10" value="20.102681188579574" />
+      <entry key="M15" value="23.720556867348634" />
+      <entry key="M30" value="31.873614113894337" />
+      <entry key="H1" value="39.70091719170863" />
+      <entry key="H2" value="45.68492775676645" />
+      <entry key="H4" value="61.68157201600718" />
+      <entry key="D1" value="412.5725440841896" />
+      <entry key="W1" value="783.9553488422478" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -223,6 +208,8 @@
       <updated>1784724033958</updated>
       <workItem from="1784724034964" duration="41714000" />
       <workItem from="1785132495425" duration="23648000" />
+      <workItem from="1785305728947" duration="9100000" />
+      <workItem from="1785411294296" duration="9081000" />
     </task>
     <task id="LOCAL-00001" summary="döviz API başlangıç yapısını, TCMB entegrasyonunu ve veritabanı şemasını ekle">
       <option name="closed" value="true" />
@@ -272,7 +259,15 @@
       <option name="project" value="LOCAL" />
       <updated>1785164272285</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary=" refactor: hesap yapısını müşteri bazlı birleşik anahtara dönüştür&#10;&#10;  - Ana hesap ve ayrı hesap ID yapısı kaldırıldı&#10;  - Müşteri hesapları MusteriId ve HesapEkNo ile bağlandı&#10;  - Ek hesap numaraları 5001'den başlayacak şekilde düzenlendi&#10;  - Döviz işlemleri ve hareketler composite foreign key yapısına geçirildi&#10;  - SQL ve sunum verisi scriptleri güncellendi">
+      <option name="closed" value="true" />
+      <created>1785305772722</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1785305772722</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,7 +281,8 @@
     <MESSAGE value="MSSQL tabanlı çoklu döviz hesabı ve döviz işlem sistemi eklendi" />
     <MESSAGE value="müşteri hesapları üzerinden döviz işlem akışı ekle" />
     <MESSAGE value="feat: şube, ana hesap ve döviz ek hesap yapısını ekle&#10;&#10;  - Hesap numarasıyla sorgulama desteği eklendi&#10;  - Döviz işlemlerine kaynak ve hedef döviz bilgileri eklendi&#10;  - Veritabanı kurulum ve sunum verisi scriptleri hazırlandı" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: şube, ana hesap ve döviz ek hesap yapısını ekle&#10;&#10;  - Hesap numarasıyla sorgulama desteği eklendi&#10;  - Döviz işlemlerine kaynak ve hedef döviz bilgileri eklendi&#10;  - Veritabanı kurulum ve sunum verisi scriptleri hazırlandı" />
+    <MESSAGE value=" refactor: hesap yapısını müşteri bazlı birleşik anahtara dönüştür&#10;&#10;  - Ana hesap ve ayrı hesap ID yapısı kaldırıldı&#10;  - Müşteri hesapları MusteriId ve HesapEkNo ile bağlandı&#10;  - Ek hesap numaraları 5001'den başlayacak şekilde düzenlendi&#10;  - Döviz işlemleri ve hareketler composite foreign key yapısına geçirildi&#10;  - SQL ve sunum verisi scriptleri güncellendi" />
+    <option name="LAST_COMMIT_MESSAGE" value=" refactor: hesap yapısını müşteri bazlı birleşik anahtara dönüştür&#10;&#10;  - Ana hesap ve ayrı hesap ID yapısı kaldırıldı&#10;  - Müşteri hesapları MusteriId ve HesapEkNo ile bağlandı&#10;  - Ek hesap numaraları 5001'den başlayacak şekilde düzenlendi&#10;  - Döviz işlemleri ve hareketler composite foreign key yapısına geçirildi&#10;  - SQL ve sunum verisi scriptleri güncellendi" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

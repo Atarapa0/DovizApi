@@ -53,21 +53,24 @@ BEGIN TRY
 
     CREATE TABLE dbo.Subeler
     (
-        Id INT IDENTITY(1,1) NOT NULL
+        Id INT IDENTITY(2324,1) NOT NULL
             CONSTRAINT PK_Subeler PRIMARY KEY,
-        Kod VARCHAR(10) NOT NULL,
+        Kod VARCHAR(4) NOT NULL,
         Ad NVARCHAR(100) NOT NULL,
         AktifMi BIT NOT NULL
             CONSTRAINT DF_Subeler_AktifMi DEFAULT (1),
         OlusturmaTarihi DATETIME2 NOT NULL
             CONSTRAINT DF_Subeler_OlusturmaTarihi DEFAULT SYSUTCDATETIME(),
 
-        CONSTRAINT UQ_Subeler_Kod UNIQUE (Kod)
+        CONSTRAINT UQ_Subeler_Kod UNIQUE (Kod),
+        CONSTRAINT CK_Subeler_Id CHECK (Id BETWEEN 1000 AND 9999),
+        CONSTRAINT CK_Subeler_Kod
+            CHECK (LEN(Kod) = 4 AND Kod NOT LIKE '%[^0-9]%')
     );
 
     CREATE TABLE dbo.Musteriler
     (
-        Id INT IDENTITY(1,1) NOT NULL
+        Id INT IDENTITY(100000,1) NOT NULL
             CONSTRAINT PK_Musteriler PRIMARY KEY,
         SubeId INT NOT NULL,
         Ad NVARCHAR(100) NOT NULL,
@@ -79,6 +82,7 @@ BEGIN TRY
         GuncellemeTarihi DATETIME2 NOT NULL
             CONSTRAINT DF_Musteriler_GuncellemeTarihi DEFAULT SYSUTCDATETIME(),
 
+        CONSTRAINT CK_Musteriler_Id CHECK (Id BETWEEN 100000 AND 999999),
         CONSTRAINT FK_Musteriler_Subeler
             FOREIGN KEY (SubeId) REFERENCES dbo.Subeler(Id)
     );
@@ -134,8 +138,7 @@ BEGIN TRY
     (
         Id BIGINT IDENTITY(1,1) NOT NULL
             CONSTRAINT PK_DovizIslemleri PRIMARY KEY,
-        ReferansNo UNIQUEIDENTIFIER NOT NULL
-            CONSTRAINT DF_DovizIslemleri_ReferansNo DEFAULT NEWID(),
+        ReferansNo CHAR(16) NOT NULL,
         MusteriId INT NOT NULL,
         BorcluHesapEkNo INT NOT NULL,
         AlacakliHesapEkNo INT NOT NULL,
@@ -150,6 +153,14 @@ BEGIN TRY
             CONSTRAINT DF_DovizIslemleri_IslemTarihi DEFAULT SYSUTCDATETIME(),
 
         CONSTRAINT UQ_DovizIslemleri_ReferansNo UNIQUE (ReferansNo),
+        CONSTRAINT CK_DovizIslemleri_ReferansNo
+            CHECK
+            (
+                LEFT(ReferansNo, 4) NOT LIKE '%[^0-9]%' AND
+                SUBSTRING(ReferansNo, 5, 4) IN ('DOVA', 'DOVS') AND
+                SUBSTRING(ReferansNo, 9, 2) NOT LIKE '%[^0-9]%' AND
+                RIGHT(ReferansNo, 6) NOT LIKE '%[^0-9]%'
+            ),
         CONSTRAINT CK_DovizIslemleri_Hesaplar
             CHECK (BorcluHesapEkNo <> AlacakliHesapEkNo),
         CONSTRAINT CK_DovizIslemleri_Dovizler
@@ -213,6 +224,23 @@ BEGIN TRY
     CREATE INDEX IX_HesapHareketleri_Hesap
         ON dbo.HesapHareketleri(MusteriId, HesapEkNo);
 
+    /*
+        Referans biçimi: SSSSIIIIYYNNNNNN
+        SSSS   : 4 basamaklı şube kodu
+        IIII   : DOVA veya DOVS işlem kodu
+        YY     : Yılın son iki basamağı
+        NNNNNN : 6 basamaklı sayaç
+
+        Kurulumda dört örnek işlem bulunduğu için uygulama sayacı 5'ten devam eder.
+    */
+    CREATE SEQUENCE dbo.DovizReferansSayaci
+        AS INT
+        START WITH 5
+        INCREMENT BY 1
+        MINVALUE 1
+        MAXVALUE 999999
+        NO CYCLE;
+
     /* Temel dövizler */
     INSERT INTO dbo.Dovizler (Kod, Ad, Birim)
     VALUES
@@ -233,13 +261,13 @@ BEGIN TRY
     /* Şubeler */
     INSERT INTO dbo.Subeler (Kod, Ad)
     VALUES
-        ('001', N'Merkez Şube'),
-        ('002', N'Kadıköy Şubesi'),
-        ('003', N'Ankara Çankaya Şubesi');
+        ('2324', N'Merkez Şube'),
+        ('2325', N'Kadıköy Şubesi'),
+        ('2326', N'Ankara Çankaya Şubesi');
 
-    DECLARE @MerkezSubeId INT = (SELECT Id FROM dbo.Subeler WHERE Kod = '001');
-    DECLARE @KadikoySubeId INT = (SELECT Id FROM dbo.Subeler WHERE Kod = '002');
-    DECLARE @AnkaraSubeId INT = (SELECT Id FROM dbo.Subeler WHERE Kod = '003');
+    DECLARE @MerkezSubeId INT = (SELECT Id FROM dbo.Subeler WHERE Kod = '2324');
+    DECLARE @KadikoySubeId INT = (SELECT Id FROM dbo.Subeler WHERE Kod = '2325');
+    DECLARE @AnkaraSubeId INT = (SELECT Id FROM dbo.Subeler WHERE Kod = '2326');
 
     /* Müşteriler */
     INSERT INTO dbo.Musteriler (SubeId, Ad, Soyad)
@@ -285,10 +313,10 @@ BEGIN TRY
         (@GbpDovizId, '2026-07-25', 1, 40.800000, 41.250000);
 
     /* Referans numaralı örnek döviz işlemleri */
-    DECLARE @Islem1Referans UNIQUEIDENTIFIER = '10000000-0000-0000-0000-000000000001';
-    DECLARE @Islem2Referans UNIQUEIDENTIFIER = '10000000-0000-0000-0000-000000000002';
-    DECLARE @Islem3Referans UNIQUEIDENTIFIER = '10000000-0000-0000-0000-000000000003';
-    DECLARE @Islem4Referans UNIQUEIDENTIFIER = '10000000-0000-0000-0000-000000000004';
+    DECLARE @Islem1Referans CHAR(16) = '2324DOVS26000001';
+    DECLARE @Islem2Referans CHAR(16) = '2324DOVS26000002';
+    DECLARE @Islem3Referans CHAR(16) = '2325DOVS26000003';
+    DECLARE @Islem4Referans CHAR(16) = '2326DOVA26000004';
 
     INSERT INTO dbo.DovizIslemleri
     (

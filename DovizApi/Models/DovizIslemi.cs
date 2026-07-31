@@ -3,7 +3,7 @@ namespace DovizApi.Models;
 public sealed class DovizIslemi
 {
     public long Id { get; set; }
-    public Guid ReferansNo { get; set; }
+    public string ReferansNo { get; set; } = string.Empty;
     public int MusteriId { get; set; }
     public int BorcluHesapEkNo { get; set; }
     public int AlacakliHesapEkNo { get; set; }

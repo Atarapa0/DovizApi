@@ -3,7 +3,7 @@ namespace DovizApi.Responses;
 public sealed class DovizCevirResponse
 {
     public long IslemId { get; init; }
-    public Guid ReferansNo { get; init; }
+    public string ReferansNo { get; init; } = string.Empty;
     public int MusteriId { get; init; }
     public int OdenenDovizId { get; init; }
     public string OdenenDovizKodu { get; init; } = string.Empty;

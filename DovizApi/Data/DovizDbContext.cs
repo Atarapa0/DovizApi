@@ -111,9 +111,19 @@ public class DovizDbContext : DbContext
                     "CK_DovizIslemleri_Tutarlar",
                     "[OdenenDovizMiktari] > 0 AND [AlinanDovizMiktari] > 0 " +
                     "AND [OdenenDovizKuru] > 0 AND [AlinanDovizKuru] > 0 AND [TlKarsiligi] > 0");
+                table.HasCheckConstraint(
+                    "CK_DovizIslemleri_ReferansNo",
+                    "LEFT([ReferansNo], 4) NOT LIKE '%[^0-9]%' " +
+                    "AND SUBSTRING([ReferansNo], 5, 4) IN ('DOVA', 'DOVS') " +
+                    "AND SUBSTRING([ReferansNo], 9, 2) NOT LIKE '%[^0-9]%' " +
+                    "AND RIGHT([ReferansNo], 6) NOT LIKE '%[^0-9]%'");
             });
             entity.HasKey(x => x.Id);
-            entity.Property(x => x.ReferansNo).HasDefaultValueSql("NEWID()");
+            entity.Property(x => x.ReferansNo)
+                .HasMaxLength(16)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .IsRequired();
             entity.Property(x => x.OdenenDovizMiktari).HasPrecision(19, 4);
             entity.Property(x => x.AlinanDovizMiktari).HasPrecision(19, 4);
             entity.Property(x => x.OdenenDovizKuru).HasPrecision(19, 6);

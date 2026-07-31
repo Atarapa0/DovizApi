@@ -13,7 +13,7 @@ public sealed class MusteriOlusturRequest
     public string Soyad { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Şube kodu boş olamaz.")]
-    [StringLength(10, ErrorMessage = "Şube kodu en fazla 10 karakter olabilir.")]
+    [RegularExpression(@"^\d{4}$", ErrorMessage = "Şube kodu dört rakamdan oluşmalıdır.")]
     public string SubeKodu { get; set; } = string.Empty;
 
     [Range(typeof(decimal), "0", "999999999999999.9999",
