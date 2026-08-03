@@ -45,3 +45,12 @@ Accept: application/json
 ### Şubeleri getir
 GET {{DovizApi_HostAddress}}/api/v1/subeler
 Accept: application/json
+
+### Yeni şube oluştur
+POST {{DovizApi_HostAddress}}/api/v1/subeler
+Content-Type: application/json
+
+{
+  "kod": "2327",
+  "ad": "İzmir Şubesi"
+}
