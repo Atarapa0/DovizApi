@@ -16,13 +16,6 @@
   <component name="ChangeListManager">
     <list default="true" id="91a6fc8a-51c6-4623-acaa-b1ae3d141140" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Data/DovizDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Data/DovizDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/DovizApi.http" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/DovizApi.http" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Models/DovizIslemi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/DovizIslemi.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Requests/MusteriOlusturRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Requests/MusteriOlusturRequest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Responses/DovizCevirResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Responses/DovizCevirResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Services/DovizIslemService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Services/DovizIslemService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" afterDir="false" />
@@ -209,7 +202,8 @@
       <workItem from="1784724034964" duration="41714000" />
       <workItem from="1785132495425" duration="23648000" />
       <workItem from="1785305728947" duration="9100000" />
-      <workItem from="1785411294296" duration="9081000" />
+      <workItem from="1785411294296" duration="9118000" />
+      <workItem from="1785758639920" duration="848000" />
     </task>
     <task id="LOCAL-00001" summary="döviz API başlangıç yapısını, TCMB entegrasyonunu ve veritabanı şemasını ekle">
       <option name="closed" value="true" />
@@ -267,7 +261,15 @@
       <option name="project" value="LOCAL" />
       <updated>1785305772722</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary=" feat: döviz işlemleri için özel referans numarası oluşturma&#10;&#10;  - GUID referans numarası yerine şube, işlem türü, yıl ve sayaçtan oluşan format eklendi&#10;  - Referans sayacı SQL Server sequence ile yönetildi&#10;  - Şube kodları 4 haneli olacak şekilde güncellendi&#10;  - Müşteri ve şube başlangıç ID değerleri düzenlendi&#10;  - İstek doğrulamaları ve örnek HTTP çağrıları güncellendi">
+      <option name="closed" value="true" />
+      <created>1785507681143</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1785507681143</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,7 +284,8 @@
     <MESSAGE value="müşteri hesapları üzerinden döviz işlem akışı ekle" />
     <MESSAGE value="feat: şube, ana hesap ve döviz ek hesap yapısını ekle&#10;&#10;  - Hesap numarasıyla sorgulama desteği eklendi&#10;  - Döviz işlemlerine kaynak ve hedef döviz bilgileri eklendi&#10;  - Veritabanı kurulum ve sunum verisi scriptleri hazırlandı" />
     <MESSAGE value=" refactor: hesap yapısını müşteri bazlı birleşik anahtara dönüştür&#10;&#10;  - Ana hesap ve ayrı hesap ID yapısı kaldırıldı&#10;  - Müşteri hesapları MusteriId ve HesapEkNo ile bağlandı&#10;  - Ek hesap numaraları 5001'den başlayacak şekilde düzenlendi&#10;  - Döviz işlemleri ve hareketler composite foreign key yapısına geçirildi&#10;  - SQL ve sunum verisi scriptleri güncellendi" />
-    <option name="LAST_COMMIT_MESSAGE" value=" refactor: hesap yapısını müşteri bazlı birleşik anahtara dönüştür&#10;&#10;  - Ana hesap ve ayrı hesap ID yapısı kaldırıldı&#10;  - Müşteri hesapları MusteriId ve HesapEkNo ile bağlandı&#10;  - Ek hesap numaraları 5001'den başlayacak şekilde düzenlendi&#10;  - Döviz işlemleri ve hareketler composite foreign key yapısına geçirildi&#10;  - SQL ve sunum verisi scriptleri güncellendi" />
+    <MESSAGE value=" feat: döviz işlemleri için özel referans numarası oluşturma&#10;&#10;  - GUID referans numarası yerine şube, işlem türü, yıl ve sayaçtan oluşan format eklendi&#10;  - Referans sayacı SQL Server sequence ile yönetildi&#10;  - Şube kodları 4 haneli olacak şekilde güncellendi&#10;  - Müşteri ve şube başlangıç ID değerleri düzenlendi&#10;  - İstek doğrulamaları ve örnek HTTP çağrıları güncellendi" />
+    <option name="LAST_COMMIT_MESSAGE" value=" feat: döviz işlemleri için özel referans numarası oluşturma&#10;&#10;  - GUID referans numarası yerine şube, işlem türü, yıl ve sayaçtan oluşan format eklendi&#10;  - Referans sayacı SQL Server sequence ile yönetildi&#10;  - Şube kodları 4 haneli olacak şekilde güncellendi&#10;  - Müşteri ve şube başlangıç ID değerleri düzenlendi&#10;  - İstek doğrulamaları ve örnek HTTP çağrıları güncellendi" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
