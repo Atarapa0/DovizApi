@@ -151,6 +151,8 @@ BEGIN TRY
         TlKarsiligi DECIMAL(19,4) NOT NULL,
         IslemTarihi DATETIME2 NOT NULL
             CONSTRAINT DF_DovizIslemleri_IslemTarihi DEFAULT SYSUTCDATETIME(),
+        OrijinalIslemId BIGINT NULL,
+        IptalNedeni NVARCHAR(500) NULL,
 
         CONSTRAINT UQ_DovizIslemleri_ReferansNo UNIQUE (ReferansNo),
         CONSTRAINT CK_DovizIslemleri_ReferansNo
@@ -174,6 +176,12 @@ BEGIN TRY
                 AlinanDovizKuru > 0 AND
                 TlKarsiligi > 0
             ),
+        CONSTRAINT CK_DovizIslemleri_TersKayit
+            CHECK
+            (
+                (OrijinalIslemId IS NULL AND IptalNedeni IS NULL) OR
+                (OrijinalIslemId IS NOT NULL AND IptalNedeni IS NOT NULL)
+            ),
         CONSTRAINT FK_DovizIslemleri_BorcluHesap
             FOREIGN KEY (MusteriId, BorcluHesapEkNo)
             REFERENCES dbo.MusteriHesaplari(MusteriId, HesapEkNo),
@@ -183,7 +191,9 @@ BEGIN TRY
         CONSTRAINT FK_DovizIslemleri_OdenenDoviz
             FOREIGN KEY (OdenenDovizId) REFERENCES dbo.Dovizler(Id),
         CONSTRAINT FK_DovizIslemleri_AlinanDoviz
-            FOREIGN KEY (AlinanDovizId) REFERENCES dbo.Dovizler(Id)
+            FOREIGN KEY (AlinanDovizId) REFERENCES dbo.Dovizler(Id),
+        CONSTRAINT FK_DovizIslemleri_OrijinalIslem
+            FOREIGN KEY (OrijinalIslemId) REFERENCES dbo.DovizIslemleri(Id)
     );
 
     CREATE INDEX IX_DovizIslemleri_BorcluHesap
@@ -194,6 +204,11 @@ BEGIN TRY
         ON dbo.DovizIslemleri(OdenenDovizId);
     CREATE INDEX IX_DovizIslemleri_AlinanDovizId
         ON dbo.DovizIslemleri(AlinanDovizId);
+    CREATE UNIQUE INDEX UX_DovizIslemleri_OrijinalIslemId
+        ON dbo.DovizIslemleri(OrijinalIslemId)
+        WHERE OrijinalIslemId IS NOT NULL;
+    CREATE INDEX IX_DovizIslemleri_IslemTarihi_Id
+        ON dbo.DovizIslemleri(IslemTarihi DESC, Id DESC);
 
     CREATE TABLE dbo.HesapHareketleri
     (

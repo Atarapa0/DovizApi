@@ -15,10 +15,14 @@ public sealed class DovizIslemi
     public decimal AlinanDovizKuru { get; set; }
     public decimal TlKarsiligi { get; set; }
     public DateTime IslemTarihi { get; set; }
+    public long? OrijinalIslemId { get; set; }
+    public string? IptalNedeni { get; set; }
 
     public MusteriHesabi BorcluHesap { get; set; } = null!;
     public MusteriHesabi AlacakliHesap { get; set; } = null!;
     public Doviz OdenenDoviz { get; set; } = null!;
     public Doviz AlinanDoviz { get; set; } = null!;
+    public DovizIslemi? OrijinalIslem { get; set; }
+    public DovizIslemi? TersKayit { get; set; }
     public ICollection<HesapHareketi> HesapHareketleri { get; set; } = [];
 }

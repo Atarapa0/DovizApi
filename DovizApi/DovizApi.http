@@ -15,6 +15,18 @@ Content-Type: application/json
 GET {{DovizApi_HostAddress}}/api/v1/musteriler/100000/hesaplar
 Accept: application/json
 
+### Sayfalı müşteri listesi
+GET {{DovizApi_HostAddress}}/api/v1/musteriler?page=1&pageSize=20&arama=ahmet&subeKodu=2324
+Accept: application/json
+
+### Hızlı müşteri arama
+GET {{DovizApi_HostAddress}}/api/v1/musteriler/ara?q=1000&limit=10
+Accept: application/json
+
+### Müşterinin tüm hesap hareketleri
+GET {{DovizApi_HostAddress}}/api/v1/musteriler/100000/hesap-hareketleri
+Accept: application/json
+
 ### Döviz ek hesabı aç
 POST {{DovizApi_HostAddress}}/api/v1/musteriler/100000/hesaplar
 Content-Type: application/json
@@ -35,15 +47,31 @@ Content-Type: application/json
 }
 
 ### İşlemleri ve kaynak/hedef dövizleri getir
-GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri-getir
+GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri-getir?page=1&pageSize=20
 Accept: application/json
 
 ### Şubeye göre işlemleri getir
-GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri-getir?subeKodu=2324
+GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri-getir?page=1&pageSize=20&subeKodu=2324
 Accept: application/json
+
+### Referans numarasıyla işlem detayı
+GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri/2324DOVS26000001
+Accept: application/json
+
+### İşlemi silmeden ters kayıtla iptal et
+POST {{DovizApi_HostAddress}}/api/v1/doviz-islemleri/2324DOVS26000001/iptal
+Content-Type: application/json
+
+{
+  "iptalNedeni": "Müşteri talebi"
+}
 
 ### Şubeleri getir
 GET {{DovizApi_HostAddress}}/api/v1/subeler
+Accept: application/json
+
+### Şube detayı
+GET {{DovizApi_HostAddress}}/api/v1/subeler/2324
 Accept: application/json
 
 ### Yeni şube oluştur

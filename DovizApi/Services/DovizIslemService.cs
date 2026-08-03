@@ -200,6 +200,127 @@ public sealed class DovizIslemService : IDovizIslemService
         });
     }
 
+    public async Task<DovizTersKayitSonucu> TersKayitOlusturAsync(
+        string referansNo,
+        string iptalNedeni,
+        CancellationToken cancellationToken)
+    {
+        await using var transaction = await _context.Database.BeginTransactionAsync(
+            IsolationLevel.Serializable,
+            cancellationToken);
+
+        var orijinalIslem = await _context.DovizIslemleri
+            .Include(x => x.BorcluHesap)
+                .ThenInclude(x => x.Doviz)
+            .Include(x => x.BorcluHesap)
+                .ThenInclude(x => x.Musteri)
+                .ThenInclude(x => x.Sube)
+            .Include(x => x.AlacakliHesap)
+                .ThenInclude(x => x.Doviz)
+            .SingleOrDefaultAsync(
+                x => x.ReferansNo == referansNo,
+                cancellationToken);
+
+        if (orijinalIslem is null)
+        {
+            return DovizTersKayitSonucu.Hata(
+                "Döviz işlemi bulunamadı.",
+                bulunamadi: true);
+        }
+
+        if (orijinalIslem.OrijinalIslemId is not null)
+        {
+            return DovizTersKayitSonucu.Hata(
+                "Ters kayıt işlemi tekrar ters çevrilemez.",
+                cakisma: true);
+        }
+
+        var dahaOnceTersKayitOlusturuldu = await _context.DovizIslemleri
+            .AnyAsync(
+                x => x.OrijinalIslemId == orijinalIslem.Id,
+                cancellationToken);
+
+        if (dahaOnceTersKayitOlusturuldu)
+        {
+            return DovizTersKayitSonucu.Hata(
+                "Bu işlem için daha önce ters kayıt oluşturulmuş.",
+                cakisma: true);
+        }
+
+        var geriAlinacakHesap = orijinalIslem.BorcluHesap;
+        var iadeEdilecekHesap = orijinalIslem.AlacakliHesap;
+
+        if (geriAlinacakHesap.Bakiye < orijinalIslem.AlinanDovizMiktari)
+        {
+            return DovizTersKayitSonucu.Hata(
+                $"Ek No {geriAlinacakHesap.HesapEkNo} hesabının ters kayıt için bakiyesi yetersiz.",
+                cakisma: true);
+        }
+
+        var islemTarihi = DateTime.UtcNow;
+        var subeKodu = geriAlinacakHesap.Musteri.Sube.Kod;
+        var islemKodu = iadeEdilecekHesap.Doviz.Kod == "TRY"
+            ? "DOVA"
+            : "DOVS";
+        var sayac = await SonrakiReferansSayaciniAlAsync(cancellationToken);
+        var tersKayitReferansNo = $"{subeKodu}{islemKodu}{islemTarihi:yy}{sayac:D6}";
+
+        geriAlinacakHesap.Bakiye -= orijinalIslem.AlinanDovizMiktari;
+        geriAlinacakHesap.GuncellemeTarihi = islemTarihi;
+        iadeEdilecekHesap.Bakiye += orijinalIslem.OdenenDovizMiktari;
+        iadeEdilecekHesap.GuncellemeTarihi = islemTarihi;
+
+        var tersKayit = new DovizIslemi
+        {
+            ReferansNo = tersKayitReferansNo,
+            MusteriId = orijinalIslem.MusteriId,
+            BorcluHesapEkNo = iadeEdilecekHesap.HesapEkNo,
+            AlacakliHesapEkNo = geriAlinacakHesap.HesapEkNo,
+            OdenenDovizId = orijinalIslem.AlinanDovizId,
+            AlinanDovizId = orijinalIslem.OdenenDovizId,
+            OdenenDovizMiktari = orijinalIslem.AlinanDovizMiktari,
+            AlinanDovizMiktari = orijinalIslem.OdenenDovizMiktari,
+            OdenenDovizKuru = orijinalIslem.AlinanDovizKuru,
+            AlinanDovizKuru = orijinalIslem.OdenenDovizKuru,
+            TlKarsiligi = orijinalIslem.TlKarsiligi,
+            IslemTarihi = islemTarihi,
+            OrijinalIslemId = orijinalIslem.Id,
+            IptalNedeni = iptalNedeni
+        };
+
+        tersKayit.HesapHareketleri.Add(new HesapHareketi
+        {
+            MusteriId = tersKayit.MusteriId,
+            HesapEkNo = iadeEdilecekHesap.HesapEkNo,
+            HareketTuru = "BORC",
+            DovizMiktari = orijinalIslem.OdenenDovizMiktari,
+            TlKarsiligi = orijinalIslem.TlKarsiligi,
+            IslemTarihi = islemTarihi
+        });
+        tersKayit.HesapHareketleri.Add(new HesapHareketi
+        {
+            MusteriId = tersKayit.MusteriId,
+            HesapEkNo = geriAlinacakHesap.HesapEkNo,
+            HareketTuru = "ALACAK",
+            DovizMiktari = orijinalIslem.AlinanDovizMiktari,
+            TlKarsiligi = orijinalIslem.TlKarsiligi,
+            IslemTarihi = islemTarihi
+        });
+
+        _context.DovizIslemleri.Add(tersKayit);
+        await _context.SaveChangesAsync(cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+
+        return DovizTersKayitSonucu.Basari(new DovizTersKayitResponse
+        {
+            IslemId = tersKayit.Id,
+            OrijinalReferansNo = orijinalIslem.ReferansNo,
+            TersKayitReferansNo = tersKayit.ReferansNo,
+            IptalNedeni = tersKayit.IptalNedeni,
+            IslemTarihi = tersKayit.IslemTarihi
+        });
+    }
+
     private async Task<int> SonrakiReferansSayaciniAlAsync(
         CancellationToken cancellationToken)
     {

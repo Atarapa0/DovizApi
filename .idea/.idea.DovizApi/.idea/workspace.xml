@@ -15,8 +15,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="91a6fc8a-51c6-4623-acaa-b1ae3d141140" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/DovizApi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/DovizApi.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/MusterilerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/MusterilerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/SubelerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/SubelerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Data/DovizDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Data/DovizDbContext.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/DovizApi.http" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/DovizApi.http" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Models/DovizIslemi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Models/DovizIslemi.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Services/DovizIslemService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Services/DovizIslemService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Services/IDovizIslemService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Services/IDovizIslemService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" afterDir="false" />

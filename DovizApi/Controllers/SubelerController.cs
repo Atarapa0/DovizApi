@@ -39,6 +39,36 @@ public sealed class SubelerController : ControllerBase
         return Ok(subeler);
     }
 
+    [HttpGet("{subeKodu}")]
+    public async Task<ActionResult<SubeResponse>> SubeDetayiniGetir(
+        string subeKodu,
+        CancellationToken cancellationToken)
+    {
+        var kod = subeKodu.Trim();
+        if (kod.Length != 4 || !kod.All(char.IsDigit))
+        {
+            return BadRequest(new { mesaj = "Şube kodu dört rakamdan oluşmalıdır." });
+        }
+
+        var sube = await _context.Subeler
+            .AsNoTracking()
+            .Where(x => x.Kod == kod)
+            .Select(x => new SubeResponse
+            {
+                Id = x.Id,
+                Kod = x.Kod,
+                Ad = x.Ad,
+                AktifMi = x.AktifMi,
+                MusteriSayisi = x.Musteriler.Count,
+                OlusturmaTarihi = x.OlusturmaTarihi
+            })
+            .SingleOrDefaultAsync(cancellationToken);
+
+        return sube is null
+            ? NotFound(new { mesaj = "Şube bulunamadı." })
+            : Ok(sube);
+    }
+
     [HttpPost]
     public async Task<ActionResult<SubeResponse>> SubeOlustur(
         SubeOlusturRequest request,

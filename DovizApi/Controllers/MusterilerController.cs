@@ -2,6 +2,7 @@ using System.Data;
 using DovizApi.Data;
 using DovizApi.Models;
 using DovizApi.Requests;
+using DovizApi.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -102,21 +103,91 @@ public sealed class MusterilerController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> MusterileriGetir(CancellationToken cancellationToken)
+    public async Task<ActionResult<PagedResponse<MusteriListeResponse>>> MusterileriGetir(
+        [FromQuery] MusteriListeQuery query,
+        CancellationToken cancellationToken)
     {
+        var sorgu = _context.Musteriler.AsNoTracking();
+        var arama = query.Arama?.Trim();
+
+        if (!string.IsNullOrWhiteSpace(arama))
+        {
+            sorgu = sorgu.Where(x =>
+                x.Id.ToString().StartsWith(arama) ||
+                x.Ad.Contains(arama) ||
+                x.Soyad.Contains(arama) ||
+                (x.Ad + " " + x.Soyad).Contains(arama));
+        }
+
+        if (!string.IsNullOrWhiteSpace(query.SubeKodu))
+        {
+            var subeKodu = query.SubeKodu.Trim();
+            sorgu = sorgu.Where(x => x.Sube.Kod == subeKodu);
+        }
+
+        var totalCount = await sorgu.CountAsync(cancellationToken);
+        var musteriler = await sorgu
+            .OrderBy(x => x.Id)
+            .Skip((query.Page - 1) * query.PageSize)
+            .Take(query.PageSize)
+            .Select(x => new MusteriListeResponse
+            {
+                Id = x.Id,
+                Ad = x.Ad,
+                Soyad = x.Soyad,
+                AktifMi = x.AktifMi,
+                Sube = new SubeOzetResponse
+                {
+                    Id = x.Sube.Id,
+                    Kod = x.Sube.Kod,
+                    Ad = x.Sube.Ad
+                },
+                HesapSayisi = x.Hesaplar.Count,
+                OlusturmaTarihi = x.OlusturmaTarihi,
+                GuncellemeTarihi = x.GuncellemeTarihi
+            })
+            .ToListAsync(cancellationToken);
+
+        return Ok(PagedResponse<MusteriListeResponse>.Create(
+            musteriler,
+            query.Page,
+            query.PageSize,
+            totalCount));
+    }
+
+    [HttpGet("ara")]
+    public async Task<ActionResult<IReadOnlyList<MusteriAramaResponse>>> MusteriAra(
+        [FromQuery] MusteriAraQuery query,
+        CancellationToken cancellationToken)
+    {
+        var arama = query.Q.Trim();
+        if (string.IsNullOrWhiteSpace(arama))
+        {
+            return BadRequest(new { mesaj = "Arama metni boş olamaz." });
+        }
+
         var musteriler = await _context.Musteriler
             .AsNoTracking()
+            .Where(x =>
+                x.Id.ToString().StartsWith(arama) ||
+                x.Ad.Contains(arama) ||
+                x.Soyad.Contains(arama) ||
+                (x.Ad + " " + x.Soyad).Contains(arama))
             .OrderBy(x => x.Id)
-            .Select(x => new
+            .Take(query.Limit)
+            .Select(x => new MusteriAramaResponse
             {
-                x.Id,
-                x.Ad,
-                x.Soyad,
-                x.AktifMi,
-                sube = new { x.Sube.Id, x.Sube.Kod, x.Sube.Ad },
-                hesapSayisi = x.Hesaplar.Count,
-                x.OlusturmaTarihi,
-                x.GuncellemeTarihi
+                Id = x.Id,
+                Ad = x.Ad,
+                Soyad = x.Soyad,
+                AktifMi = x.AktifMi,
+                Sube = new SubeOzetResponse
+                {
+                    Id = x.Sube.Id,
+                    Kod = x.Sube.Kod,
+                    Ad = x.Sube.Ad
+                },
+                HesapSayisi = x.Hesaplar.Count
             })
             .ToListAsync(cancellationToken);
 
@@ -267,5 +338,53 @@ public sealed class MusterilerController : ControllerBase
             .ToListAsync(cancellationToken);
 
         return Ok(new { hesap, hareketler });
+    }
+
+    [HttpGet("{musteriId:int}/hesap-hareketleri")]
+    public async Task<ActionResult<MusteriHesapHareketleriResponse>> TumHesapHareketleriniGetir(
+        int musteriId,
+        CancellationToken cancellationToken)
+    {
+        var sonuc = await _context.Musteriler
+            .AsNoTracking()
+            .AsSplitQuery()
+            .Where(x => x.Id == musteriId)
+            .Select(x => new MusteriHesapHareketleriResponse
+            {
+                MusteriId = x.Id,
+                Ad = x.Ad,
+                Soyad = x.Soyad,
+                Hesaplar = x.Hesaplar
+                    .OrderBy(hesap => hesap.HesapEkNo)
+                    .Select(hesap => new HesapHareketleriResponse
+                    {
+                        HesapEkNo = hesap.HesapEkNo,
+                        DovizId = hesap.DovizId,
+                        DovizKodu = hesap.Doviz.Kod,
+                        DovizAdi = hesap.Doviz.Ad,
+                        Bakiye = hesap.Bakiye,
+                        AktifMi = hesap.AktifMi,
+                        Hareketler = hesap.Hareketler
+                            .OrderByDescending(hareket => hareket.IslemTarihi)
+                            .ThenByDescending(hareket => hareket.Id)
+                            .Select(hareket => new HesapHareketResponse
+                            {
+                                Id = hareket.Id,
+                                DovizIslemId = hareket.DovizIslemId,
+                                ReferansNo = hareket.DovizIslemi.ReferansNo,
+                                HareketTuru = hareket.HareketTuru,
+                                DovizMiktari = hareket.DovizMiktari,
+                                TlKarsiligi = hareket.TlKarsiligi,
+                                IslemTarihi = hareket.IslemTarihi
+                            })
+                            .ToList()
+                    })
+                    .ToList()
+            })
+            .SingleOrDefaultAsync(cancellationToken);
+
+        return sonuc is null
+            ? NotFound(new { mesaj = "Müşteri bulunamadı." })
+            : Ok(sonuc);
     }
 }

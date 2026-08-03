@@ -117,6 +117,10 @@ public class DovizDbContext : DbContext
                     "AND SUBSTRING([ReferansNo], 5, 4) IN ('DOVA', 'DOVS') " +
                     "AND SUBSTRING([ReferansNo], 9, 2) NOT LIKE '%[^0-9]%' " +
                     "AND RIGHT([ReferansNo], 6) NOT LIKE '%[^0-9]%'");
+                table.HasCheckConstraint(
+                    "CK_DovizIslemleri_TersKayit",
+                    "([OrijinalIslemId] IS NULL AND [IptalNedeni] IS NULL) " +
+                    "OR ([OrijinalIslemId] IS NOT NULL AND [IptalNedeni] IS NOT NULL)");
             });
             entity.HasKey(x => x.Id);
             entity.Property(x => x.ReferansNo)
@@ -130,7 +134,12 @@ public class DovizDbContext : DbContext
             entity.Property(x => x.AlinanDovizKuru).HasPrecision(19, 6);
             entity.Property(x => x.TlKarsiligi).HasPrecision(19, 4);
             entity.Property(x => x.IslemTarihi).HasDefaultValueSql("SYSUTCDATETIME()");
+            entity.Property(x => x.IptalNedeni).HasMaxLength(500);
             entity.HasIndex(x => x.ReferansNo).IsUnique();
+            entity.HasIndex(x => x.OrijinalIslemId)
+                .IsUnique()
+                .HasFilter("[OrijinalIslemId] IS NOT NULL");
+            entity.HasIndex(x => new { x.IslemTarihi, x.Id });
             entity.HasIndex(x => new { x.MusteriId, x.BorcluHesapEkNo });
             entity.HasIndex(x => new { x.MusteriId, x.AlacakliHesapEkNo });
             entity.HasIndex(x => x.OdenenDovizId);
@@ -150,6 +159,10 @@ public class DovizDbContext : DbContext
             entity.HasOne(x => x.AlinanDoviz)
                 .WithMany(x => x.AlinanOlduguIslemler)
                 .HasForeignKey(x => x.AlinanDovizId)
+                .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(x => x.OrijinalIslem)
+                .WithOne(x => x.TersKayit)
+                .HasForeignKey<DovizIslemi>(x => x.OrijinalIslemId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
