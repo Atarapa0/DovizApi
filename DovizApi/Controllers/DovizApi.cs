@@ -117,10 +117,20 @@ public class DovizController : ControllerBase
     }
 
     [HttpGet("doviz-islemleri-getir", Name = "DovizIslemleriGetir")]
-    public async Task<IActionResult> DovizIslemleriGetir(CancellationToken cancellationToken)
+    public async Task<IActionResult> DovizIslemleriGetir(
+        [FromQuery] string? subeKodu,
+        CancellationToken cancellationToken)
     {
-        var islemler = await _context.DovizIslemleri
-            .AsNoTracking()
+        var sorgu = _context.DovizIslemleri.AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(subeKodu))
+        {
+            var filtrelenenSubeKodu = subeKodu.Trim().ToUpperInvariant();
+            sorgu = sorgu.Where(islem =>
+                islem.BorcluHesap.Musteri.Sube.Kod == filtrelenenSubeKodu);
+        }
+
+        var islemler = await sorgu
             .OrderByDescending(islem => islem.IslemTarihi)
             .Select(islem => new
             {

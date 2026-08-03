@@ -37,3 +37,11 @@ Content-Type: application/json
 ### İşlemleri ve kaynak/hedef dövizleri getir
 GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri-getir
 Accept: application/json
+
+### Şubeye göre işlemleri getir
+GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri-getir?subeKodu=2324
+Accept: application/json
+
+### Şubeleri getir
+GET {{DovizApi_HostAddress}}/api/v1/subeler
+Accept: application/json
