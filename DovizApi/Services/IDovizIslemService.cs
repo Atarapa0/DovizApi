@@ -36,7 +36,11 @@ public sealed record DovizTersKayitSonucu(
 public sealed record DovizCevirSonucu(
     DovizCevirResponse? Veri,
     string? HataMesaji,
-    bool Bulunamadi = false)
+    bool Bulunamadi = false,
+    string? HataKodu = null,
+    decimal? MevcutBakiye = null,
+    decimal? IstenenMiktar = null,
+    string? DovizKodu = null)
 {
     public bool Basarili => Veri is not null;
 
@@ -44,4 +48,17 @@ public sealed record DovizCevirSonucu(
 
     public static DovizCevirSonucu Hata(string mesaj, bool bulunamadi = false) =>
         new(null, mesaj, bulunamadi);
+
+    public static DovizCevirSonucu YetersizBakiye(
+        int hesapEkNo,
+        decimal mevcutBakiye,
+        decimal istenenMiktar,
+        string dovizKodu) =>
+        new(
+            null,
+            $"Ek No {hesapEkNo} hesabında yeterli bakiye yok. Alım gerçekleştirilemez.",
+            HataKodu: "YETERSIZ_BAKIYE",
+            MevcutBakiye: mevcutBakiye,
+            IstenenMiktar: istenenMiktar,
+            DovizKodu: dovizKodu);
 }

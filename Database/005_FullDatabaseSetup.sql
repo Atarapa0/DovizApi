@@ -328,10 +328,10 @@ BEGIN TRY
         (@GbpDovizId, '2026-07-25', 1, 40.800000, 41.250000);
 
     /* Referans numaralı örnek döviz işlemleri */
-    DECLARE @Islem1Referans CHAR(16) = '2324DOVS26000001';
+    DECLARE @Islem1Referans CHAR(16) = '2324DOVA26000001';
     DECLARE @Islem2Referans CHAR(16) = '2324DOVS26000002';
-    DECLARE @Islem3Referans CHAR(16) = '2325DOVS26000003';
-    DECLARE @Islem4Referans CHAR(16) = '2326DOVA26000004';
+    DECLARE @Islem3Referans CHAR(16) = '2325DOVA26000003';
+    DECLARE @Islem4Referans CHAR(16) = '2326DOVS26000004';
 
     INSERT INTO dbo.DovizIslemleri
     (
@@ -341,19 +341,19 @@ BEGIN TRY
         OdenenDovizKuru, AlinanDovizKuru, TlKarsiligi, IslemTarihi
     )
     VALUES
-        (@Islem1Referans, @AyseMusteriId, 5002, 5001,
+        (@Islem1Referans, @AyseMusteriId, 5001, 5002,
          @TryDovizId, @UsdDovizId, 32500.0000, 1000.0000,
          1.000000, 32.500000, 32500.0000, '2026-07-25T10:15:00'),
 
-        (@Islem2Referans, @AyseMusteriId, 5003, 5002,
+        (@Islem2Referans, @AyseMusteriId, 5002, 5003,
          @UsdDovizId, @EurDovizId, 500.0000, 460.0000,
          32.200000, 35.000000, 16100.0000, '2026-07-25T11:30:00'),
 
-        (@Islem3Referans, @MehmetMusteriId, 5002, 5001,
+        (@Islem3Referans, @MehmetMusteriId, 5001, 5002,
          @TryDovizId, @EurDovizId, 17500.0000, 500.0000,
          1.000000, 35.000000, 17500.0000, '2026-07-26T09:45:00'),
 
-        (@Islem4Referans, @ElifMusteriId, 5001, 5002,
+        (@Islem4Referans, @ElifMusteriId, 5002, 5001,
          @UsdDovizId, @TryDovizId, 1000.0000, 32200.0000,
          32.200000, 1.000000, 32200.0000, '2026-07-26T14:20:00');
 
@@ -369,17 +369,17 @@ BEGIN TRY
     INSERT INTO dbo.HesapHareketleri
         (DovizIslemId, MusteriId, HesapEkNo, HareketTuru, DovizMiktari, TlKarsiligi, IslemTarihi)
     VALUES
-        (@Islem1Id, @AyseMusteriId, 5002, 'BORC', 1000.0000, 32500.0000, '2026-07-25T10:15:00'),
-        (@Islem1Id, @AyseMusteriId, 5001, 'ALACAK', 32500.0000, 32500.0000, '2026-07-25T10:15:00'),
+        (@Islem1Id, @AyseMusteriId, 5001, 'BORC', 32500.0000, 32500.0000, '2026-07-25T10:15:00'),
+        (@Islem1Id, @AyseMusteriId, 5002, 'ALACAK', 1000.0000, 32500.0000, '2026-07-25T10:15:00'),
 
-        (@Islem2Id, @AyseMusteriId, 5003, 'BORC', 460.0000, 16100.0000, '2026-07-25T11:30:00'),
-        (@Islem2Id, @AyseMusteriId, 5002, 'ALACAK', 500.0000, 16100.0000, '2026-07-25T11:30:00'),
+        (@Islem2Id, @AyseMusteriId, 5002, 'BORC', 500.0000, 16100.0000, '2026-07-25T11:30:00'),
+        (@Islem2Id, @AyseMusteriId, 5003, 'ALACAK', 460.0000, 16100.0000, '2026-07-25T11:30:00'),
 
-        (@Islem3Id, @MehmetMusteriId, 5002, 'BORC', 500.0000, 17500.0000, '2026-07-26T09:45:00'),
-        (@Islem3Id, @MehmetMusteriId, 5001, 'ALACAK', 17500.0000, 17500.0000, '2026-07-26T09:45:00'),
+        (@Islem3Id, @MehmetMusteriId, 5001, 'BORC', 17500.0000, 17500.0000, '2026-07-26T09:45:00'),
+        (@Islem3Id, @MehmetMusteriId, 5002, 'ALACAK', 500.0000, 17500.0000, '2026-07-26T09:45:00'),
 
-        (@Islem4Id, @ElifMusteriId, 5001, 'BORC', 32200.0000, 32200.0000, '2026-07-26T14:20:00'),
-        (@Islem4Id, @ElifMusteriId, 5002, 'ALACAK', 1000.0000, 32200.0000, '2026-07-26T14:20:00');
+        (@Islem4Id, @ElifMusteriId, 5002, 'BORC', 1000.0000, 32200.0000, '2026-07-26T14:20:00'),
+        (@Islem4Id, @ElifMusteriId, 5001, 'ALACAK', 32200.0000, 32200.0000, '2026-07-26T14:20:00');
 
     COMMIT TRANSACTION;
 END TRY

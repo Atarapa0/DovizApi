@@ -55,11 +55,11 @@ GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri-getir?page=1&pageSize=20&sub
 Accept: application/json
 
 ### Referans numarasıyla işlem detayı
-GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri/2324DOVS26000001
+GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri/2324DOVA26000001
 Accept: application/json
 
 ### İşlemi silmeden ters kayıtla iptal et
-POST {{DovizApi_HostAddress}}/api/v1/doviz-islemleri/2324DOVS26000001/iptal
+POST {{DovizApi_HostAddress}}/api/v1/doviz-islemleri/2324DOVA26000001/iptal
 Content-Type: application/json
 
 {

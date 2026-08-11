@@ -655,22 +655,22 @@ Bu nedenle:
 
 ## 12. Bakiye kontrolü
 
-Alacaklı, yani ödeyen hesabın yeterli bakiyesi olup olmadığı kontrol edilir. Bakiye yetersizse hiçbir bakiye veya işlem kaydı değiştirilmez.
+Borçlu, yani ödeyen hesabın yeterli bakiyesi olup olmadığı kontrol edilir. Bakiye yetersizse hiçbir bakiye veya işlem kaydı değiştirilmez.
 
 ## 13. Borçlu ve alacaklı hesap
 
 Projede kullanılan iş kuralı şöyledir:
 
 ```text
-Borçlu hesap   → Alınacak döviz hesabı → Bakiye artar
-Alacaklı hesap → Ödenecek döviz hesabı → Bakiye azalır
+Borçlu hesap   → Ödenecek döviz hesabı → Bakiye azalır
+Alacaklı hesap → Alınacak döviz hesabı → Bakiye artar
 ```
 
 Örnek olarak 1.000 TRY ile EUR alındığında:
 
 ```text
-EUR hesabı → BORC   → EUR bakiyesi artar
-TRY hesabı → ALACAK → TRY bakiyesi azalır
+TRY hesabı → BORC   → TRY bakiyesi azalır
+EUR hesabı → ALACAK → EUR bakiyesi artar
 ```
 
 ## 14. DovizIslemi ve HesapHareketi ayrımı
@@ -687,8 +687,8 @@ TRY hesabı → ALACAK → TRY bakiyesi azalır
 `HesapHareketi` ise işlemin tek bir hesaba yansımasıdır:
 
 ```text
-EUR hesabına BORC hareketi
-TRY hesabına ALACAK hareketi
+TRY hesabına BORC hareketi
+EUR hesabına ALACAK hareketi
 ```
 
 Bu ayrım hesap ekstresi ve işlem raporu üretmeyi kolaylaştırır.
@@ -951,8 +951,8 @@ Bir finansal işlemin tek bir hesaba etkisini temsil eder.
 Bir döviz dönüşümünde normalde iki hareket oluşur:
 
 ```text
-Alınan döviz hesabı  → BORC
-Ödenen döviz hesabı → ALACAK
+Ödenen döviz hesabı → BORC
+Alınan döviz hesabı → ALACAK
 ```
 
 Hesap ekstresi bu tablodan üretilebilir.
@@ -1155,9 +1155,9 @@ Müşteriye yeni döviz hesabı açar.
 Bu örneğin anlamı:
 
 ```text
-Hesap Ek No 5002 → Alınacak döviz hesabı, BORC, bakiye artar
-Hesap Ek No 5001 → Ödenecek döviz hesabı, ALACAK, bakiye azalır
-Ödenecek tutar → Hesap Ek No 5001 hesabının dövizinden 1.000 birim
+Hesap Ek No 5002 → Ödenecek döviz hesabı, BORC, bakiye azalır
+Hesap Ek No 5001 → Alınacak döviz hesabı, ALACAK, bakiye artar
+Ödenecek tutar → Hesap Ek No 5002 hesabının dövizinden 1.000 birim
 ```
 
 ---
@@ -1183,7 +1183,7 @@ Ana müşteri, hesap ve döviz dönüşümü senaryosu çalışmaktadır. Üreti
 
 Projeyi anlatman istendiğinde şu açıklama kullanılabilir:
 
-> Projeyi ASP.NET Core Web API ve Entity Framework Core kullanarak katmanlı şekilde geliştirdim. Controller'ları yalnızca HTTP istek ve cevaplarından sorumlu tuttum, finansal iş kurallarını service katmanına taşıdım. Controller ile servis arasındaki bağımlılığı azaltmak ve testlerde mock kullanabilmek için interface kullandım. TCMB bağlantısını IHttpClientFactory üzerinden yönetip XML kurlarını invariant culture ile parse ettim. Müşterilerin her dövizini ek numaralı ayrı hesap olarak modelledim. Döviz dönüşümünde ödeyen hesabı alacaklandırıp bakiyesini azaltıyor, alınan döviz hesabını borçlandırıp bakiyesini artırıyorum. Bakiye güncellemesi, ana işlem kaydı ve iki hesap hareketini tek SQL transaction'ında kaydederek veri bütünlüğünü koruyorum. Request ve response DTO'larıyla veritabanı entity'lerini doğrudan dışarı açmıyorum.
+> Projeyi ASP.NET Core Web API ve Entity Framework Core kullanarak katmanlı şekilde geliştirdim. Controller'ları yalnızca HTTP istek ve cevaplarından sorumlu tuttum, finansal iş kurallarını service katmanına taşıdım. Controller ile servis arasındaki bağımlılığı azaltmak ve testlerde mock kullanabilmek için interface kullandım. TCMB bağlantısını IHttpClientFactory üzerinden yönetip XML kurlarını invariant culture ile parse ettim. Müşterilerin her dövizini ek numaralı ayrı hesap olarak modelledim. Döviz dönüşümünde borçlu hesabı ödeyen kaynak hesap olarak kullanıp bakiyesini azaltıyor, alacaklı hesabı alınan dövizin hedef hesabı olarak kullanıp bakiyesini artırıyorum. Bakiye güncellemesi, ana işlem kaydı ve iki hesap hareketini tek SQL transaction'ında kaydederek veri bütünlüğünü koruyorum. Request ve response DTO'larıyla veritabanı entity'lerini doğrudan dışarı açmıyorum.
 
 ## IDovizIslemService sorusuna kısa cevap
 

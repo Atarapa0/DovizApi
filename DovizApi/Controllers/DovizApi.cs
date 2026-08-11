@@ -136,6 +136,18 @@ public class DovizController : ControllerBase
                 return NotFound(new { mesaj = sonuc.HataMesaji });
             }
 
+            if (sonuc.HataKodu == "YETERSIZ_BAKIYE")
+            {
+                return BadRequest(new
+                {
+                    kod = sonuc.HataKodu,
+                    mesaj = sonuc.HataMesaji,
+                    mevcutBakiye = sonuc.MevcutBakiye,
+                    istenenMiktar = sonuc.IstenenMiktar,
+                    dovizKodu = sonuc.DovizKodu
+                });
+            }
+
             return BadRequest(new { mesaj = sonuc.HataMesaji });
         }
         catch (Exception exception) when (exception is HttpRequestException or XmlException)

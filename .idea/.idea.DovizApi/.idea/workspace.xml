@@ -14,7 +14,24 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="91a6fc8a-51c6-4623-acaa-b1ae3d141140" name="Changes" comment="" />
+    <list default="true" id="91a6fc8a-51c6-4623-acaa-b1ae3d141140" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/DovizApi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/DovizApi.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/DovizApi.http" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/DovizApi.http" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Requests/DovizCevirRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Requests/DovizCevirRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Services/DovizIslemService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Services/DovizIslemService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/Services/IDovizIslemService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Services/IDovizIslemService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/refint/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/refint/DovizApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PROJE_ANLATIMI.md" beforeDir="false" afterPath="$PROJECT_DIR$/PROJE_ANLATIMI.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,7 +41,7 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="31" />
+    <option name="cachedIndexableFilesCount" value="39" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,61 +68,61 @@
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0012317018270063" />
-      <entry key="MS500" value="2.0059013049738725" />
-      <entry key="S2" value="6.077337375861589" />
-      <entry key="S5" value="8.14436009461681" />
-      <entry key="S10" value="9.023276478370075" />
-      <entry key="S30" value="10.527220331179867" />
-      <entry key="S60" value="12.834554222717083" />
-      <entry key="M2" value="15.611931682949871" />
-      <entry key="M5" value="18.53865357968534" />
-      <entry key="M10" value="21.65651034706676" />
-      <entry key="M15" value="25.096302037874384" />
-      <entry key="M30" value="33.06222049112147" />
-      <entry key="H1" value="40.79439231409613" />
-      <entry key="H2" value="46.731206511456804" />
-      <entry key="H4" value="62.7010594646381" />
-      <entry key="D1" value="409.32718792117936" />
-      <entry key="W1" value="769.6264791379638" />
+      <entry key="MS100" value="1.1214304278997962" />
+      <entry key="MS500" value="2.367441884699976" />
+      <entry key="S2" value="3.4383218455513584" />
+      <entry key="S5" value="3.7587175700181508" />
+      <entry key="S10" value="3.876640926584717" />
+      <entry key="S30" value="4.299866908381038" />
+      <entry key="S60" value="6.932995117891409" />
+      <entry key="M2" value="14.5106729462078" />
+      <entry key="M5" value="28.62960155338662" />
+      <entry key="M10" value="38.60120649157254" />
+      <entry key="M15" value="44.73407860873725" />
+      <entry key="M30" value="55.89391808807209" />
+      <entry key="H1" value="65.75604858733307" />
+      <entry key="H2" value="73.04125067171807" />
+      <entry key="H4" value="89.64501135448103" />
+      <entry key="D1" value="436.4016204637565" />
+      <entry key="W1" value="797.3828629980854" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="4.87386E-319" />
-      <entry key="MS500" value="2.1755773244810737E-64" />
-      <entry key="S2" value="1.238525236767277E-16" />
-      <entry key="S5" value="5.202531045408782E-7" />
-      <entry key="S10" value="9.820814376550644E-4" />
-      <entry key="S30" value="0.2012618242842009" />
-      <entry key="S60" value="0.8615534051385199" />
-      <entry key="M2" value="1.8365292784505312" />
-      <entry key="M5" value="2.9221254106950982" />
-      <entry key="M10" value="3.4173521573589385" />
-      <entry key="M15" value="3.6011207091481503" />
-      <entry key="M30" value="3.795139731049624" />
-      <entry key="H1" value="3.8961764431597716" />
-      <entry key="H2" value="3.947735328461711" />
-      <entry key="H4" value="3.9763346681392053" />
-      <entry key="D1" value="8.240331830179347" />
-      <entry key="W1" value="19.32753264371487" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="1.1972709380718975E-226" />
+      <entry key="S2" value="3.373333969546993E-57" />
+      <entry key="S5" value="3.0922633432970087E-23" />
+      <entry key="S10" value="7.571438487498719E-12" />
+      <entry key="S30" value="3.9759267095062606E-4" />
+      <entry key="S60" value="0.0382931141085845" />
+      <entry key="M2" value="0.3871837285189934" />
+      <entry key="M5" value="1.5677129557602367" />
+      <entry key="M10" value="2.5030733901532263" />
+      <entry key="M15" value="2.926129738698887" />
+      <entry key="M30" value="3.4210208414021817" />
+      <entry key="H1" value="3.699155525147782" />
+      <entry key="H2" value="3.846626467564456" />
+      <entry key="H4" value="3.925083709812273" />
+      <entry key="D1" value="8.222534410031514" />
+      <entry key="W1" value="19.32156376060632" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9738479211344339" />
-      <entry key="MS500" value="1.9878111722612237" />
-      <entry key="S2" value="6.059746954521301" />
-      <entry key="S5" value="8.134733979330028" />
-      <entry key="S10" value="9.018654136874867" />
-      <entry key="S30" value="10.710082766614317" />
-      <entry key="S60" value="13.659463020340558" />
-      <entry key="M2" value="17.40940211858452" />
-      <entry key="M5" value="21.435737970347507" />
-      <entry key="M10" value="25.059157880345168" />
-      <entry key="M15" value="28.687063191593197" />
-      <entry key="M30" value="36.85182469338869" />
-      <entry key="H1" value="44.687602335945044" />
-      <entry key="H2" value="50.67734527744622" />
-      <entry key="H4" value="66.67654482572442" />
-      <entry key="D1" value="417.56718808907715" />
-      <entry key="W1" value="788.9539005552539" />
+      <entry key="MS100" value="1.0566117705542057" />
+      <entry key="MS500" value="2.3431116054769205" />
+      <entry key="S2" value="3.429456196972002" />
+      <entry key="S5" value="3.7548237630746786" />
+      <entry key="S10" value="3.8746294210162624" />
+      <entry key="S30" value="4.299486266942313" />
+      <entry key="S60" value="6.96909237017467" />
+      <entry key="M2" value="14.889091643468676" />
+      <entry key="M5" value="30.18350755952463" />
+      <entry key="M10" value="41.093278320397836" />
+      <entry key="M15" value="47.65162465642744" />
+      <entry key="M30" value="59.30985959252098" />
+      <entry key="H1" value="69.45234120106828" />
+      <entry key="H2" value="76.88629776727308" />
+      <entry key="H4" value="93.56924473853674" />
+      <entry key="D1" value="444.62382191742415" />
+      <entry key="W1" value="816.7043152790178" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -194,6 +211,9 @@
       <workItem from="1785305728947" duration="9100000" />
       <workItem from="1785411294296" duration="9118000" />
       <workItem from="1785758639920" duration="1234000" />
+      <workItem from="1786017871796" duration="1787000" />
+      <workItem from="1786343049245" duration="6011000" />
+      <workItem from="1786431555826" duration="6967000" />
     </task>
     <task id="LOCAL-00001" summary="döviz API başlangıç yapısını, TCMB entegrasyonunu ve veritabanı şemasını ekle">
       <option name="closed" value="true" />
