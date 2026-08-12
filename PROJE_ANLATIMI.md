@@ -323,6 +323,20 @@ Servis sonucu HTTP cevabına dönüştürülür:
 - Bakiye veya iş kuralı hatasıysa `400 Bad Request`
 - TCMB kullanılamıyorsa `503 Service Unavailable`
 
+## POST /api/v1/arbitraj/hesapla
+
+Başlangıç dövizi, iki ara döviz ve başlangıç miktarı üzerinden teorik üçlü arbitraj simülasyonu yapar.
+
+```text
+Başlangıç → Birinci ara döviz → İkinci ara döviz → Başlangıç
+```
+
+Her dönüşüm adımında kaynak döviz TCMB alış kurundan TL'ye çevrilir, ardından hedef döviz TCMB satış kurundan alınır. TRY kuru `1` kabul edilir. Ara sonuçlar dört ondalık basamağa `ToZero` yönünde yuvarlanır.
+
+Endpoint yalnızca hesaplama yapar; müşteri bakiyesi, döviz işlemi veya hesap hareketi oluşturmaz. Bu nedenle veritabanı transaction'ı ve yeni bir SQL tablosu kullanmaz.
+
+Başarılı cevapta üç dönüşüm adımı, son miktar, kâr/zarar tutarı, kâr/zarar oranı ve teorik fırsat durumu bulunur. Tek kur kaynağı TCMB olduğu için bu sonuç farklı piyasalardaki gerçek arbitraj fırsatını değil, TCMB alış-satış kurlarına göre teorik simülasyonu temsil eder.
+
 ## GET /api/v1/dovizleri-getir
 
 Veritabanındaki aktif dövizleri getirir.

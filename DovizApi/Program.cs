@@ -29,6 +29,7 @@ builder.Services.AddHttpClient("Tcmb", client =>
 });
 builder.Services.AddScoped<ITcmbKurService, TcmbKurService>();
 builder.Services.AddScoped<IDovizIslemService, DovizIslemService>();
+builder.Services.AddScoped<IArbitrajService, ArbitrajService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

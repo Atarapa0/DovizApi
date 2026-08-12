@@ -48,15 +48,15 @@ public class DovizController : ControllerBase
             {
                 HesapEkNo = islem.BorcluHesapEkNo,
                 DovizKodu = islem.BorcluHesap.Doviz.Kod,
-                Miktar = islem.AlinanDovizMiktari,
-                Kur = islem.AlinanDovizKuru
+                Miktar = islem.OdenenDovizMiktari,
+                Kur = islem.OdenenDovizKuru
             },
             AlacakliHesap = new DovizIslemHesapResponse
             {
                 HesapEkNo = islem.AlacakliHesapEkNo,
                 DovizKodu = islem.AlacakliHesap.Doviz.Kod,
-                Miktar = islem.OdenenDovizMiktari,
-                Kur = islem.OdenenDovizKuru
+                Miktar = islem.AlinanDovizMiktari,
+                Kur = islem.AlinanDovizKuru
             },
             TlKarsiligi = islem.TlKarsiligi,
             IslemTarihi = islem.IslemTarihi,

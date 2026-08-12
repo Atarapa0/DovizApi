@@ -46,6 +46,17 @@ Content-Type: application/json
   "odenecekDovizMiktari": 1000
 }
 
+### TCMB kurlarıyla teorik üçlü arbitraj hesapla
+POST {{DovizApi_HostAddress}}/api/v1/arbitraj/hesapla
+Content-Type: application/json
+
+{
+  "baslangicDovizKodu": "TRY",
+  "birinciAraDovizKodu": "EUR",
+  "ikinciAraDovizKodu": "USD",
+  "baslangicMiktari": 100000
+}
+
 ### İşlemleri ve kaynak/hedef dövizleri getir
 GET {{DovizApi_HostAddress}}/api/v1/doviz-islemleri-getir?page=1&pageSize=20
 Accept: application/json
