@@ -45,14 +45,3 @@ BEGIN
 END;
 
 COMMIT TRANSACTION;
-
-
-
-/*
-Son Konteol için script
-*/
-
-
-SELECT TOP 10 *
-FROM dbo.HataLoglari
-ORDER BY Tarih DESC;

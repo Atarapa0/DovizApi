@@ -88,8 +88,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => options.SupportNonNullableReferenceTypes());
 
 var app = builder.Build();
+var swaggerEnabled = app.Environment.IsDevelopment() ||
+                     builder.Configuration.GetValue<bool>("Swagger:Enabled");
 
-if (app.Environment.IsDevelopment())
+if (swaggerEnabled)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -129,9 +131,25 @@ app.UseStatusCodePages(async statusCodeContext =>
         contentType: "application/problem+json");
 });
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseAuthorization();
 app.MapControllers();
+app.MapGet("/health", () => Results.Ok(new
+{
+    status = "healthy",
+    timestamp = DateTime.UtcNow
+})).ExcludeFromDescription();
+
+if (swaggerEnabled)
+{
+    app.MapGet("/", () => Results.Redirect("/swagger"))
+        .ExcludeFromDescription();
+}
+
 app.Run();
 
 static void ElasticSinkEkle(

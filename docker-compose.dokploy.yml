@@ -1,0 +1,60 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: 8080
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=dovizDb;User Id=sa;Password=${MSSQL_SA_PASSWORD};Encrypt=True;TrustServerCertificate=True;ConnectRetryCount=5;ConnectRetryInterval=3"
+      Swagger__Enabled: "true"
+      ELASTICSEARCH_ENABLED: "${ELASTICSEARCH_ENABLED:-false}"
+      ELASTICSEARCH_URL: "${ELASTICSEARCH_URL:-}"
+      ELASTICSEARCH_USERNAME: "${ELASTICSEARCH_USERNAME:-}"
+      ELASTICSEARCH_PASSWORD: "${ELASTICSEARCH_PASSWORD:-}"
+      ELASTICSEARCH_INDEX_PREFIX: "${ELASTICSEARCH_INDEX_PREFIX:-doviz-api}"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    expose:
+      - "8080"
+    networks:
+      - internal
+      - dokploy-network
+
+  sqlserver:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Database/Dockerfile
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$${MSSQL_SA_PASSWORD}"
+          -C -l 5 -t 5 -d dovizDb
+          -Q "SET NOCOUNT ON; SELECT TOP (1) Id FROM dbo.HataLoglari;" > /dev/null
+      interval: 10s
+      timeout: 8s
+      start_period: 60s
+      retries: 30
+    networks:
+      - internal
+
+volumes:
+  sqlserver_data:
+
+networks:
+  internal:
+    internal: true
+  dokploy-network:
+    external: true

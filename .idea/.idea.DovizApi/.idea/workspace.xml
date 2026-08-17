@@ -16,36 +16,20 @@
   <component name="ChangeListManager">
     <list default="true" id="91a6fc8a-51c6-4623-acaa-b1ae3d141140" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/ArbitrajController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/ArbitrajController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/DovizApi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/DovizApi.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/MusterilerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/MusterilerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Controllers/SubelerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Controllers/SubelerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Data/DovizDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Data/DovizDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/DovizApi.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/DovizApi.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/006_AddDovizIslemiTersKayit.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Database/006_AddDovizIslemiTersKayit.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/007_AddHataLoglari.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Database/007_AddHataLoglari.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Services/IDovizIslemService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Services/IDovizIslemService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Services/TcmbKurService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Services/TcmbKurService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.deps.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/appsettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/refint/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/refint/DovizApi.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/DovizApi.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/DovizApi.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/DovizApi.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/DovizApi.csproj.nuget.g.targets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -232,7 +216,7 @@
       <workItem from="1786431555826" duration="9107000" />
       <workItem from="1786514933430" duration="10062000" />
       <workItem from="1786689791736" duration="9386000" />
-      <workItem from="1786947162486" duration="7931000" />
+      <workItem from="1786947162486" duration="10851000" />
     </task>
     <task id="LOCAL-00001" summary="döviz API başlangıç yapısını, TCMB entegrasyonunu ve veritabanı şemasını ekle">
       <option name="closed" value="true" />
@@ -306,7 +290,15 @@
       <option name="project" value="LOCAL" />
       <updated>1786452966398</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="feat: merkezi hata yönetimi ve SQL/Elasticsearch loglama sistemi ekle">
+      <option name="closed" value="true" />
+      <created>1786973140562</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1786973140562</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -334,7 +326,8 @@
     <MESSAGE value=" refactor: hesap yapısını müşteri bazlı birleşik anahtara dönüştür&#10;&#10;  - Ana hesap ve ayrı hesap ID yapısı kaldırıldı&#10;  - Müşteri hesapları MusteriId ve HesapEkNo ile bağlandı&#10;  - Ek hesap numaraları 5001'den başlayacak şekilde düzenlendi&#10;  - Döviz işlemleri ve hareketler composite foreign key yapısına geçirildi&#10;  - SQL ve sunum verisi scriptleri güncellendi" />
     <MESSAGE value=" feat: döviz işlemleri için özel referans numarası oluşturma&#10;&#10;  - GUID referans numarası yerine şube, işlem türü, yıl ve sayaçtan oluşan format eklendi&#10;  - Referans sayacı SQL Server sequence ile yönetildi&#10;  - Şube kodları 4 haneli olacak şekilde güncellendi&#10;  - Müşteri ve şube başlangıç ID değerleri düzenlendi&#10;  - İstek doğrulamaları ve örnek HTTP çağrıları güncellendi" />
     <MESSAGE value="correct currency conversion account directions and transaction handling" />
-    <option name="LAST_COMMIT_MESSAGE" value="correct currency conversion account directions and transaction handling" />
+    <MESSAGE value="feat: merkezi hata yönetimi ve SQL/Elasticsearch loglama sistemi ekle" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: merkezi hata yönetimi ve SQL/Elasticsearch loglama sistemi ekle" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
