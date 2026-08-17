@@ -17,6 +17,7 @@ public class DovizDbContext : DbContext
     public DbSet<KurKaydi> KurKayitlari => Set<KurKaydi>();
     public DbSet<DovizIslemi> DovizIslemleri => Set<DovizIslemi>();
     public DbSet<HesapHareketi> HesapHareketleri => Set<HesapHareketi>();
+    public DbSet<HataLogu> HataLoglari => Set<HataLogu>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -187,6 +188,34 @@ public class DovizDbContext : DbContext
                 .WithMany(x => x.Hareketler)
                 .HasForeignKey(x => new { x.MusteriId, x.HesapEkNo })
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<HataLogu>(entity =>
+        {
+            entity.ToTable("HataLoglari");
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.HataId).HasMaxLength(32).IsUnicode(false).IsRequired();
+            entity.Property(x => x.CorrelationId).HasMaxLength(128).IsUnicode(false).IsRequired();
+            entity.Property(x => x.Tarih).HasDefaultValueSql("SYSUTCDATETIME()");
+            entity.Property(x => x.Seviye).HasMaxLength(16).IsUnicode(false).IsRequired();
+            entity.Property(x => x.HataKodu).HasMaxLength(100).IsUnicode(false).IsRequired();
+            entity.Property(x => x.Mesaj).HasMaxLength(1000).IsRequired();
+            entity.Property(x => x.Detay).HasColumnType("nvarchar(max)");
+            entity.Property(x => x.StackTrace).HasColumnType("nvarchar(max)");
+            entity.Property(x => x.ExceptionTipi).HasMaxLength(500);
+            entity.Property(x => x.Endpoint).HasMaxLength(2048);
+            entity.Property(x => x.HttpMethod).HasMaxLength(16).IsUnicode(false);
+            entity.Property(x => x.QueryString).HasMaxLength(2048);
+            entity.Property(x => x.KullaniciId).HasMaxLength(256);
+            entity.Property(x => x.SubeKodu).HasMaxLength(20);
+            entity.Property(x => x.Ortam).HasMaxLength(50).IsRequired();
+            entity.Property(x => x.Kaynak).HasMaxLength(100).IsRequired();
+            entity.Property(x => x.RequestBody).HasColumnType("nvarchar(max)");
+            entity.HasIndex(x => x.HataId).IsUnique();
+            entity.HasIndex(x => x.CorrelationId);
+            entity.HasIndex(x => x.Tarih);
+            entity.HasIndex(x => x.HttpStatus);
+            entity.HasIndex(x => x.HataKodu);
         });
     }
 }

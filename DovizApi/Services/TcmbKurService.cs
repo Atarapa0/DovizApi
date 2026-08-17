@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Xml.Linq;
+using DovizApi.Exceptions;
 
 namespace DovizApi.Services;
 
@@ -14,9 +15,27 @@ public sealed class TcmbKurService : ITcmbKurService
 
     public async Task<TcmbKurListesi> KurlariGetirAsync(CancellationToken cancellationToken)
     {
-        var httpClient = _httpClientFactory.CreateClient("Tcmb");
-        var xml = await httpClient.GetStringAsync("kurlar/today.xml", cancellationToken);
-        var belge = XDocument.Parse(xml);
+        XDocument belge;
+        try
+        {
+            var httpClient = _httpClientFactory.CreateClient("Tcmb");
+            var xml = await httpClient.GetStringAsync("kurlar/today.xml", cancellationToken);
+            belge = XDocument.Parse(xml);
+        }
+        catch (Exception exception) when (exception is HttpRequestException or System.Xml.XmlException)
+        {
+            throw new BagimlilikKullanilamiyorException(
+                "TCMB_KULLANILAMIYOR",
+                "TCMB kur verilerine şu anda ulaşılamıyor.",
+                exception);
+        }
+        catch (TaskCanceledException exception) when (!cancellationToken.IsCancellationRequested)
+        {
+            throw new BagimlilikKullanilamiyorException(
+                "TCMB_ZAMAN_ASIMI",
+                "TCMB kur isteği zaman aşımına uğradı.",
+                exception);
+        }
 
         var kurlar = belge.Descendants("Currency")
             .Select(currency => new TcmbKur(

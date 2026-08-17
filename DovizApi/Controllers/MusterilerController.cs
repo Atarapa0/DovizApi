@@ -1,5 +1,6 @@
 using System.Data;
 using DovizApi.Data;
+using DovizApi.Exceptions;
 using DovizApi.Models;
 using DovizApi.Requests;
 using DovizApi.Responses;
@@ -10,6 +11,8 @@ namespace DovizApi.Controllers;
 
 [ApiController]
 [Route("api/v1/musteriler")]
+[ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status503ServiceUnavailable)]
 public sealed class MusterilerController : ControllerBase
 {
     private const int IlkHesapEkNo = 5001;
@@ -21,6 +24,9 @@ public sealed class MusterilerController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> MusteriOlustur(
         MusteriOlusturRequest request,
         CancellationToken cancellationToken)
@@ -34,7 +40,7 @@ public sealed class MusterilerController : ControllerBase
 
         if (sube is null)
         {
-            return NotFound(new { mesaj = "Aktif şube bulunamadı." });
+            throw new KaynakBulunamadiException("SUBE_BULUNAMADI", "Aktif şube bulunamadı.");
         }
 
         var tryDoviz = await _context.Dovizler
@@ -45,7 +51,9 @@ public sealed class MusterilerController : ControllerBase
 
         if (tryDoviz is null)
         {
-            return BadRequest(new { mesaj = "Aktif TRY para birimi bulunamadı." });
+            throw new GecersizIstekException(
+                "TRY_DOVIZI_BULUNAMADI",
+                "Aktif TRY para birimi bulunamadı.");
         }
 
         await using var transaction = await _context.Database.BeginTransactionAsync(
@@ -103,6 +111,8 @@ public sealed class MusterilerController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(PagedResponse<MusteriListeResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PagedResponse<MusteriListeResponse>>> MusterileriGetir(
         [FromQuery] MusteriListeQuery query,
         CancellationToken cancellationToken)
@@ -156,6 +166,8 @@ public sealed class MusterilerController : ControllerBase
     }
 
     [HttpGet("ara")]
+    [ProducesResponseType(typeof(IReadOnlyList<MusteriAramaResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IReadOnlyList<MusteriAramaResponse>>> MusteriAra(
         [FromQuery] MusteriAraQuery query,
         CancellationToken cancellationToken)
@@ -163,9 +175,8 @@ public sealed class MusterilerController : ControllerBase
         var arama = query.Q.Trim();
         if (string.IsNullOrWhiteSpace(arama))
         {
-            return BadRequest(new { mesaj = "Arama metni boş olamaz." });
+            throw new GecersizIstekException("ARAMA_METNI_GECERSIZ", "Arama metni boş olamaz.");
         }
-
         var musteriler = await _context.Musteriler
             .AsNoTracking()
             .Where(x =>
@@ -195,6 +206,8 @@ public sealed class MusterilerController : ControllerBase
     }
 
     [HttpGet("{musteriId:int}/hesaplar")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> MusteriHesaplariniGetir(
         int musteriId,
         CancellationToken cancellationToken)
@@ -225,12 +238,18 @@ public sealed class MusterilerController : ControllerBase
             })
             .SingleOrDefaultAsync(cancellationToken);
 
-        return musteri is null
-            ? NotFound(new { mesaj = "Müşteri bulunamadı." })
-            : Ok(musteri);
+        if (musteri is null)
+        {
+            throw new KaynakBulunamadiException("MUSTERI_BULUNAMADI", "Müşteri bulunamadı.");
+        }
+
+        return Ok(musteri);
     }
 
     [HttpPost("{musteriId:int}/hesaplar")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> HesapAc(
         int musteriId,
         HesapAcRequest request,
@@ -242,7 +261,7 @@ public sealed class MusterilerController : ControllerBase
 
         if (!musteriVar)
         {
-            return NotFound(new { mesaj = "Aktif müşteri bulunamadı." });
+            throw new KaynakBulunamadiException("MUSTERI_BULUNAMADI", "Aktif müşteri bulunamadı.");
         }
 
         var dovizKodu = request.DovizKodu.Trim().ToUpperInvariant();
@@ -254,7 +273,7 @@ public sealed class MusterilerController : ControllerBase
 
         if (doviz is null)
         {
-            return NotFound(new { mesaj = "Aktif döviz bulunamadı." });
+            throw new KaynakBulunamadiException("DOVIZ_BULUNAMADI", "Aktif döviz bulunamadı.");
         }
 
         await using var transaction = await _context.Database.BeginTransactionAsync(
@@ -297,6 +316,8 @@ public sealed class MusterilerController : ControllerBase
     }
 
     [HttpGet("{musteriId:int}/hesaplar/{hesapEkNo:int}/hareketler")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> HesapHareketleriniGetir(
         int musteriId,
         int hesapEkNo,
@@ -318,7 +339,9 @@ public sealed class MusterilerController : ControllerBase
 
         if (hesap is null)
         {
-            return NotFound(new { mesaj = "Müşteriye ait hesap bulunamadı." });
+            throw new KaynakBulunamadiException(
+                "HESAP_BULUNAMADI",
+                "Müşteriye ait hesap bulunamadı.");
         }
 
         var hareketler = await _context.HesapHareketleri
@@ -341,6 +364,8 @@ public sealed class MusterilerController : ControllerBase
     }
 
     [HttpGet("{musteriId:int}/hesap-hareketleri")]
+    [ProducesResponseType(typeof(MusteriHesapHareketleriResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<MusteriHesapHareketleriResponse>> TumHesapHareketleriniGetir(
         int musteriId,
         CancellationToken cancellationToken)
@@ -383,8 +408,11 @@ public sealed class MusterilerController : ControllerBase
             })
             .SingleOrDefaultAsync(cancellationToken);
 
-        return sonuc is null
-            ? NotFound(new { mesaj = "Müşteri bulunamadı." })
-            : Ok(sonuc);
+        if (sonuc is null)
+        {
+            throw new KaynakBulunamadiException("MUSTERI_BULUNAMADI", "Müşteri bulunamadı.");
+        }
+
+        return Ok(sonuc);
     }
 }

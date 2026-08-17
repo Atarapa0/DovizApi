@@ -57,7 +57,7 @@ public sealed record DovizCevirSonucu(
         new(
             null,
             $"Ek No {hesapEkNo} hesabında yeterli bakiye yok. Alım gerçekleştirilemez.",
-            HataKodu: "YETERSIZ_BAKIYE",
+            HataKodu: "BAKIYE_YETERSIZ",
             MevcutBakiye: mevcutBakiye,
             IstenenMiktar: istenenMiktar,
             DovizKodu: dovizKodu);

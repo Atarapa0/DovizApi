@@ -1,4 +1,5 @@
 using DovizApi.Data;
+using DovizApi.Exceptions;
 using DovizApi.Models;
 using DovizApi.Requests;
 using DovizApi.Responses;
@@ -9,6 +10,8 @@ namespace DovizApi.Controllers;
 
 [ApiController]
 [Route("api/v1/subeler")]
+[ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status503ServiceUnavailable)]
 public sealed class SubelerController : ControllerBase
 {
     private readonly DovizDbContext _context;
@@ -19,6 +22,7 @@ public sealed class SubelerController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(IReadOnlyList<SubeResponse>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IReadOnlyList<SubeResponse>>> SubeleriGetir(
         CancellationToken cancellationToken)
     {
@@ -40,6 +44,9 @@ public sealed class SubelerController : ControllerBase
     }
 
     [HttpGet("{subeKodu}")]
+    [ProducesResponseType(typeof(SubeResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SubeResponse>> SubeDetayiniGetir(
         string subeKodu,
         CancellationToken cancellationToken)
@@ -47,7 +54,9 @@ public sealed class SubelerController : ControllerBase
         var kod = subeKodu.Trim();
         if (kod.Length != 4 || !kod.All(char.IsDigit))
         {
-            return BadRequest(new { mesaj = "Şube kodu dört rakamdan oluşmalıdır." });
+            throw new GecersizIstekException(
+                "SUBE_KODU_GECERSIZ",
+                "Şube kodu dört rakamdan oluşmalıdır.");
         }
 
         var sube = await _context.Subeler
@@ -64,12 +73,18 @@ public sealed class SubelerController : ControllerBase
             })
             .SingleOrDefaultAsync(cancellationToken);
 
-        return sube is null
-            ? NotFound(new { mesaj = "Şube bulunamadı." })
-            : Ok(sube);
+        if (sube is null)
+        {
+            throw new KaynakBulunamadiException("SUBE_BULUNAMADI", "Şube bulunamadı.");
+        }
+
+        return Ok(sube);
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(SubeResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status409Conflict)]
     public async Task<ActionResult<SubeResponse>> SubeOlustur(
         SubeOlusturRequest request,
         CancellationToken cancellationToken)
@@ -79,7 +94,7 @@ public sealed class SubelerController : ControllerBase
 
         if (string.IsNullOrWhiteSpace(ad))
         {
-            return BadRequest(new { mesaj = "Şube adı boş olamaz." });
+            throw new GecersizIstekException("SUBE_ADI_GECERSIZ", "Şube adı boş olamaz.");
         }
 
         var kodKullaniliyor = await _context.Subeler
@@ -88,7 +103,9 @@ public sealed class SubelerController : ControllerBase
 
         if (kodKullaniliyor)
         {
-            return Conflict(new { mesaj = $"{kod} kodlu şube zaten mevcut." });
+            throw new IsKuraliException(
+                "SUBE_KODU_CAKISMASI",
+                $"{kod} kodlu şube zaten mevcut.");
         }
 
         var sube = new Sube

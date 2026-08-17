@@ -1,4 +1,4 @@
-using System.Xml;
+using DovizApi.Exceptions;
 using DovizApi.Requests;
 using DovizApi.Responses;
 using DovizApi.Services;
@@ -8,59 +8,43 @@ namespace DovizApi.Controllers;
 
 [ApiController]
 [Route("api/v1/arbitraj")]
+[ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status503ServiceUnavailable)]
 public sealed class ArbitrajController : ControllerBase
 {
-    private readonly ILogger<ArbitrajController> _logger;
     private readonly IArbitrajService _arbitrajService;
 
-    public ArbitrajController(
-        ILogger<ArbitrajController> logger,
-        IArbitrajService arbitrajService)
+    public ArbitrajController(IArbitrajService arbitrajService)
     {
-        _logger = logger;
         _arbitrajService = arbitrajService;
     }
 
     [HttpPost("hesapla", Name = "ArbitrajHesapla")]
+    [ProducesResponseType(typeof(ArbitrajHesaplaResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ArbitrajHesaplaResponse>> ArbitrajHesapla(
         ArbitrajHesaplaRequest request,
         CancellationToken cancellationToken)
     {
-        try
+        var sonuc = await _arbitrajService.ArbitrajHesaplaAsync(
+            request,
+            cancellationToken);
+
+        if (sonuc.Basarili)
         {
-            var sonuc = await _arbitrajService.ArbitrajHesaplaAsync(
-                request,
-                cancellationToken);
-
-            if (sonuc.Basarili)
-            {
-                return Ok(sonuc.Veri);
-            }
-
-            if (sonuc.Bulunamadi)
-            {
-                return NotFound(new { mesaj = sonuc.HataMesaji });
-            }
-
-            return BadRequest(new { mesaj = sonuc.HataMesaji });
+            return Ok(sonuc.Veri);
         }
-        catch (Exception exception) when (exception is HttpRequestException or XmlException)
+
+        if (sonuc.Bulunamadi)
         {
-            _logger.LogError(exception, "Arbitraj hesabı için TCMB kurları alınamadı.");
-
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
-            {
-                mesaj = "TCMB kur verilerine şu anda ulaşılamıyor."
-            });
+            throw new KaynakBulunamadiException(
+                "ARBITRAJ_DOVIZ_BULUNAMADI",
+                sonuc.HataMesaji ?? "Arbitraj için döviz bulunamadı.");
         }
-        catch (TaskCanceledException exception) when (!cancellationToken.IsCancellationRequested)
-        {
-            _logger.LogError(exception, "Arbitraj hesabı sırasında TCMB isteği zaman aşımına uğradı.");
 
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
-            {
-                mesaj = "TCMB kur isteği zaman aşımına uğradı."
-            });
-        }
+        throw new GecersizIstekException(
+            "ARBITRAJ_HESAPLANAMADI",
+            sonuc.HataMesaji ?? "Arbitraj hesaplanamadı.");
     }
 }

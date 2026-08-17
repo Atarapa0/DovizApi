@@ -6,12 +6,14 @@ using DovizApi.Models;
 using DovizApi.Responses;
 using DovizApi.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Xml;
+using DovizApi.Exceptions;
 
 namespace DovizApi.Controllers;
 
 [ApiController]
 [Route("api/v1")]
+[ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status500InternalServerError)]
+[ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status503ServiceUnavailable)]
 public class DovizController : ControllerBase
 {
     private static readonly Expression<Func<DovizIslemi, DovizIslemResponse>>
@@ -72,105 +74,65 @@ public class DovizController : ControllerBase
                 (islem.TersKayit == null ? null : islem.TersKayit.IptalNedeni)
         };
 
-    private readonly ILogger<DovizController> _logger;
     private readonly DovizDbContext _context;
     private readonly ITcmbKurService _tcmbKurService;
     private readonly IDovizIslemService _dovizIslemService;
 
     public DovizController(
-        ILogger<DovizController> logger,
         DovizDbContext context,
         ITcmbKurService tcmbKurService,
         IDovizIslemService dovizIslemService)
     {
-        _logger = logger;
         _context = context;
         _tcmbKurService = tcmbKurService;
         _dovizIslemService = dovizIslemService;
     }
 
     [HttpGet("kur-oku", Name = "KurOku")]
+    [ProducesResponseType(typeof(TcmbKurListesi), StatusCodes.Status200OK)]
     public async Task<IActionResult> KurOku(CancellationToken cancellationToken)
     {
-        try
-        {
-            var kurListesi = await _tcmbKurService.KurlariGetirAsync(cancellationToken);
-            return Ok(kurListesi);
-        }
-        catch (Exception exception) when (exception is HttpRequestException or XmlException)
-        {
-            _logger.LogError(exception, "TCMB kur verileri alınamadı.");
-
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
-            {
-                mesaj = "TCMB kur verilerine şu anda ulaşılamıyor."
-            });
-        }
-        catch (TaskCanceledException exception) when (!cancellationToken.IsCancellationRequested)
-        {
-            _logger.LogError(exception, "TCMB kur isteği zaman aşımına uğradı.");
-
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
-            {
-                mesaj = "TCMB kur isteği zaman aşımına uğradı."
-            });
-        }
+        var kurListesi = await _tcmbKurService.KurlariGetirAsync(cancellationToken);
+        return Ok(kurListesi);
     }
 
     [HttpPost("doviz-cevir", Name = "DovizCevir")]
+    [ProducesResponseType(typeof(DovizCevirResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> DovizCevir(
         DovizCevirRequest request,
         CancellationToken cancellationToken)
     {
-        try
+        var sonuc = await _dovizIslemService.DovizCevirAsync(request, cancellationToken);
+
+        if (sonuc.Basarili)
         {
-            var sonuc = await _dovizIslemService.DovizCevirAsync(request, cancellationToken);
-
-            if (sonuc.Basarili)
-            {
-                return Ok(sonuc.Veri);
-            }
-
-            if (sonuc.Bulunamadi)
-            {
-                return NotFound(new { mesaj = sonuc.HataMesaji });
-            }
-
-            if (sonuc.HataKodu == "YETERSIZ_BAKIYE")
-            {
-                return BadRequest(new
-                {
-                    kod = sonuc.HataKodu,
-                    mesaj = sonuc.HataMesaji,
-                    mevcutBakiye = sonuc.MevcutBakiye,
-                    istenenMiktar = sonuc.IstenenMiktar,
-                    dovizKodu = sonuc.DovizKodu
-                });
-            }
-
-            return BadRequest(new { mesaj = sonuc.HataMesaji });
+            return Ok(sonuc.Veri);
         }
-        catch (Exception exception) when (exception is HttpRequestException or XmlException)
+
+        if (sonuc.Bulunamadi)
         {
-            _logger.LogError(exception, "Döviz dönüşümü için TCMB kuru alınamadı.");
-
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
-            {
-                mesaj = "TCMB kur verilerine şu anda ulaşılamıyor."
-            });
+            throw new KaynakBulunamadiException(
+                "HESAP_BULUNAMADI",
+                sonuc.HataMesaji ?? "Hesap bulunamadı.");
         }
-        catch (TaskCanceledException exception) when (!cancellationToken.IsCancellationRequested)
+
+        if (sonuc.HataKodu == "BAKIYE_YETERSIZ")
         {
-            _logger.LogError(exception, "Döviz dönüşümü sırasında TCMB isteği zaman aşımına uğradı.");
-
-            return StatusCode(StatusCodes.Status503ServiceUnavailable, new
-            {
-                mesaj = "TCMB kur isteği zaman aşımına uğradı."
-            });
+            throw new IsKuraliException(
+                sonuc.HataKodu,
+                sonuc.HataMesaji ?? "Borçlu hesabın bakiyesi yetersiz.");
         }
+
+        throw new GecersizIstekException(
+            "DOVIZ_DONUSUMU_GECERSIZ",
+            sonuc.HataMesaji ?? "Döviz dönüşümü gerçekleştirilemedi.");
     }
 
     [HttpGet("dovizleri-getir", Name = "DovizleriGetir")]
+    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
     public async Task<IActionResult> DovizleriGetir(CancellationToken cancellationToken)
     {
         var dovizler = await _context.Dovizler
@@ -190,6 +152,8 @@ public class DovizController : ControllerBase
     }
 
     [HttpGet("doviz-islemleri-getir", Name = "DovizIslemleriGetir")]
+    [ProducesResponseType(typeof(PagedResponse<DovizIslemResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<PagedResponse<DovizIslemResponse>>> DovizIslemleriGetir(
         [FromQuery] DovizIslemListeQuery query,
         CancellationToken cancellationToken)
@@ -220,6 +184,8 @@ public class DovizController : ControllerBase
     }
 
     [HttpGet("doviz-islemleri/{referansNo}", Name = "DovizIslemDetayi")]
+    [ProducesResponseType(typeof(DovizIslemDetayResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<DovizIslemDetayResponse>> DovizIslemDetayiniGetir(
         string referansNo,
         CancellationToken cancellationToken)
@@ -233,7 +199,9 @@ public class DovizController : ControllerBase
 
         if (islem is null)
         {
-            return NotFound(new { mesaj = "Döviz işlemi bulunamadı." });
+            throw new KaynakBulunamadiException(
+                "DOVIZ_ISLEMI_BULUNAMADI",
+                "Döviz işlemi bulunamadı.");
         }
 
         var hareketler = await _context.HesapHareketleri
@@ -260,6 +228,10 @@ public class DovizController : ControllerBase
     }
 
     [HttpPost("doviz-islemleri/{referansNo}/iptal")]
+    [ProducesResponseType(typeof(DovizTersKayitResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiHataResponse), StatusCodes.Status409Conflict)]
     public async Task<ActionResult<DovizTersKayitResponse>> DovizIsleminiIptalEt(
         string referansNo,
         IslemIptalRequest request,
@@ -270,7 +242,7 @@ public class DovizController : ControllerBase
 
         if (string.IsNullOrWhiteSpace(iptalNedeni))
         {
-            return BadRequest(new { mesaj = "İptal nedeni boş olamaz." });
+            throw new GecersizIstekException("IPTAL_NEDENI_GECERSIZ", "İptal nedeni boş olamaz.");
         }
 
         var sonuc = await _dovizIslemService.TersKayitOlusturAsync(
@@ -288,14 +260,20 @@ public class DovizController : ControllerBase
 
         if (sonuc.Bulunamadi)
         {
-            return NotFound(new { mesaj = sonuc.HataMesaji });
+            throw new KaynakBulunamadiException(
+                "DOVIZ_ISLEMI_BULUNAMADI",
+                sonuc.HataMesaji ?? "Döviz işlemi bulunamadı.");
         }
 
         if (sonuc.Cakisma)
         {
-            return Conflict(new { mesaj = sonuc.HataMesaji });
+            throw new IsKuraliException(
+                "ISLEM_IPTAL_CAKISMASI",
+                sonuc.HataMesaji ?? "İşlem iptal edilemedi.");
         }
 
-        return BadRequest(new { mesaj = sonuc.HataMesaji });
+        throw new GecersizIstekException(
+            "ISLEM_IPTAL_EDILEMEDI",
+            sonuc.HataMesaji ?? "İşlem iptal edilemedi.");
     }
 }
