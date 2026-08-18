@@ -16,20 +16,8 @@
   <component name="ChangeListManager">
     <list default="true" id="91a6fc8a-51c6-4623-acaa-b1ae3d141140" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Database/005_FullDatabaseSetup.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/006_AddDovizIslemiTersKayit.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Database/006_AddDovizIslemiTersKayit.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/007_AddHataLoglari.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Database/007_AddHataLoglari.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DOKPLOY_KURULUMU.md" beforeDir="false" afterPath="$PROJECT_DIR$/DOKPLOY_KURULUMU.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DovizApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/refint/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/refint/DovizApi.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,29 +125,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.DovizApi: http.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.LLMConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.DovizApi: http.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "cidr.known.project.marker": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RiderProblemsViewState">
     <hideBySeverity>
       <option value="300" />
@@ -216,7 +204,7 @@
       <workItem from="1786431555826" duration="9107000" />
       <workItem from="1786514933430" duration="10062000" />
       <workItem from="1786689791736" duration="9386000" />
-      <workItem from="1786947162486" duration="10851000" />
+      <workItem from="1786947162486" duration="14318000" />
     </task>
     <task id="LOCAL-00001" summary="döviz API başlangıç yapısını, TCMB entegrasyonunu ve veritabanı şemasını ekle">
       <option name="closed" value="true" />
@@ -298,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1786973140562</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Dokploy dağıtım yapılandırmasını ekle">
+      <option name="closed" value="true" />
+      <created>1786976452648</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1786976452648</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -327,7 +323,8 @@
     <MESSAGE value=" feat: döviz işlemleri için özel referans numarası oluşturma&#10;&#10;  - GUID referans numarası yerine şube, işlem türü, yıl ve sayaçtan oluşan format eklendi&#10;  - Referans sayacı SQL Server sequence ile yönetildi&#10;  - Şube kodları 4 haneli olacak şekilde güncellendi&#10;  - Müşteri ve şube başlangıç ID değerleri düzenlendi&#10;  - İstek doğrulamaları ve örnek HTTP çağrıları güncellendi" />
     <MESSAGE value="correct currency conversion account directions and transaction handling" />
     <MESSAGE value="feat: merkezi hata yönetimi ve SQL/Elasticsearch loglama sistemi ekle" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: merkezi hata yönetimi ve SQL/Elasticsearch loglama sistemi ekle" />
+    <MESSAGE value="Dokploy dağıtım yapılandırmasını ekle" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dokploy dağıtım yapılandırmasını ekle" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

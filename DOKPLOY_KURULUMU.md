@@ -114,6 +114,7 @@ Frontend farklı bir değişken adı kullanıyorsa aynı URL'yi o değişkene ve
 
 ## 8. Sorun giderme
 
+- `DefaultConnection bulunamadı` hatası görülürse projenin **Application** olarak değil, `docker-compose.dokploy.yml` kullanan **Compose** servisi olarak oluşturulduğunu kontrol et. Application olarak ayrı deploy ediyorsan API environment değişkenlerine `ConnectionStrings__DefaultConnection` değerini elle eklemen gerekir.
 - API başlamıyorsa önce `sqlserver` servisinin health durumunu ve logunu kontrol et.
 - `Login failed for user 'sa'` görülürse Dokploy'daki `MSSQL_SA_PASSWORD` değerini kontrol et.
 - Alan adı açılmıyorsa A kaydının doğru sunucu IP'sine çözüldüğünü doğrula.

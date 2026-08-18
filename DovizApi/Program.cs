@@ -68,9 +68,15 @@ builder.Services
         };
     });
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException(
-        "DefaultConnection bulunamadı. appsettings.Local.json dosyasını oluşturmalısın.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        builder.Environment.IsDevelopment()
+            ? "DefaultConnection bulunamadı. appsettings.Local.json dosyasını oluşturmalısın."
+            : "DefaultConnection bulunamadı. Production ortamında " +
+              "ConnectionStrings__DefaultConnection environment variable değerini tanımlamalısın.");
+}
 
 // Factory hem request scope için DovizDbContext'i hem de bağımsız log DbContext'lerini sağlar.
 builder.Services.AddDbContextFactory<DovizDbContext>(options =>
