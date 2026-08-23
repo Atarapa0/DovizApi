@@ -16,8 +16,14 @@
   <component name="ChangeListManager">
     <list default="true" id="91a6fc8a-51c6-4623-acaa-b1ae3d141140" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DovizApi/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DOKPLOY_KURULUMU.md" beforeDir="false" afterPath="$PROJECT_DIR$/DOKPLOY_KURULUMU.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DovizApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/bin/Debug/net8.0/DovizApi.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/DovizApi.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/ref/DovizApi.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/refint/DovizApi.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DovizApi/obj/Debug/net8.0/refint/DovizApi.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,7 +210,7 @@
       <workItem from="1786431555826" duration="9107000" />
       <workItem from="1786514933430" duration="10062000" />
       <workItem from="1786689791736" duration="9386000" />
-      <workItem from="1786947162486" duration="14318000" />
+      <workItem from="1786947162486" duration="46804000" />
     </task>
     <task id="LOCAL-00001" summary="döviz API başlangıç yapısını, TCMB entegrasyonunu ve veritabanı şemasını ekle">
       <option name="closed" value="true" />
@@ -294,7 +300,15 @@
       <option name="project" value="LOCAL" />
       <updated>1786976452648</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="fix: Dokploy veritabanı bağlantı yapılandırmasını netleştir">
+      <option name="closed" value="true" />
+      <created>1787033571125</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1787033571125</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -324,7 +338,8 @@
     <MESSAGE value="correct currency conversion account directions and transaction handling" />
     <MESSAGE value="feat: merkezi hata yönetimi ve SQL/Elasticsearch loglama sistemi ekle" />
     <MESSAGE value="Dokploy dağıtım yapılandırmasını ekle" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dokploy dağıtım yapılandırmasını ekle" />
+    <MESSAGE value="fix: Dokploy veritabanı bağlantı yapılandırmasını netleştir" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: Dokploy veritabanı bağlantı yapılandırmasını netleştir" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
